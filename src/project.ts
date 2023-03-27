@@ -1,15 +1,30 @@
-import * as ts from 'typescript';
-import {Config, SchemaGenerator, TypeFormatter, NodeParser} from 'ts-json-schema-generator'
+import type { Options } from "ajv";
+import { Config, NodeParser, SchemaGenerator, TypeFormatter } from "ts-json-schema-generator";
+import * as ts from "typescript";
 
 export interface IProject {
-    program: ts.Program,
-    config: Config,
-    checker: ts.TypeChecker,
-    schemaGenerator: SchemaGenerator,
-    typeFormatter: TypeFormatter,
-    nodeParser: NodeParser,
-    formatsPath: string,
+  program: ts.Program;
+  options: {
+    schema: SchemaConfig;
+    validation: AJVOptions;
+  };
+  checker: ts.TypeChecker;
+  schemaGenerator: SchemaGenerator;
+  typeFormatter: TypeFormatter;
+  nodeParser: NodeParser;
+  formatsPath: string;
 }
 
-export interface IOptions extends Config {
-}
+export type AJVOptions = Pick<
+  Options,
+  "useDefaults" | "coerceTypes" | "removeAdditional" | "loopRequired" | "loopEnum"
+>;
+export type SchemaConfig = Pick<Config, "jsDoc" | "strictTuples" | "encodeRefs" | "additionalProperties">;
+
+export const AJV_DEFAULTS: AJVOptions = {
+  useDefaults: true,
+  coerceTypes: true,
+  loopRequired: 20,
+};
+
+export type IOptions = AJVOptions & SchemaConfig;

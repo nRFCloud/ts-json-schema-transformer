@@ -1,29 +1,38 @@
 {
   "name": "ts-json-schema-transformer",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "A TypeScript transformer that generates JSON schemas and validators from TypeScript interfaces",
   "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
+    "prepare": "husky install",
+    "lint": "dprint check && denolint --config .denolint.json",
+    "fix": "dprint fmt && denolint --config .denolint.json",
     "compile": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "John Conley",
+  "license": "MIT",
   "devDependencies": {
-    "ajv-formats": "^2.1.1",
     "typescript": "^4.9.5"
   },
   "peerDependencies": {
-    "ajv-formats": ">=2.1.1",
     "typescript": "^4.9.5"
   },
   "dependencies": {
+    "@commitlint/cli": "^17.5.0",
+    "@commitlint/config-conventional": "^17.4.4",
+    "@node-rs/deno-lint": "^1.16.0",
     "@types/node": "^18.15.5",
     "ajv": "^8.12.0",
+    "dprint": "^0.35.3",
     "esbuild": "^0.17.12",
+    "husky": "^8.0.3",
     "ts-json-schema-generator": "^1.2.0"
   }
 }

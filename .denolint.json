@@ -1,0 +1,6 @@
+{
+  "rules": {
+    "tags": ["recommended"],
+    "exclude": ["no-control-regex", "no-cond-assign"]
+  }
+}

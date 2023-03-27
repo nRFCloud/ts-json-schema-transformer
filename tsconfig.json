@@ -18,8 +18,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "experimentalDecorators": true,
-    "plugins": [
-    ],
+    "plugins": [],
     "stripInternal": true,
     "paths": {}
   },
