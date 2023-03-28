@@ -1,0 +1,25 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "tests/dist",
+    "rootDir": "tests/src",
+    "plugins": [
+      {
+        "transform": "./dist/transform.js"
+      }
+    ],
+    "tsBuildInfoFile": "tests/dist/tsconfig.tsbuildinfo",
+    "types": [
+      "node",
+      "jest"
+    ],
+    "paths": {
+      "ts-json-schema-transformer": [
+        "./dist"
+      ]
+    }
+  },
+  "include": [
+    "tests/src/**/*"
+  ]
+}

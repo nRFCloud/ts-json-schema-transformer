@@ -5,13 +5,13 @@ import { GetSchemaTransformer } from "./get-schema-transformer.js";
 import { ValidateTransformer } from "./validate-transformer.js";
 
 const LIB_PATHS = [
-  path.join("node_modules", "ts-json-schema-transformer", "dist"),
+  path.join("ts-json-schema-transformer", "dist"),
 ];
 
 export abstract class CallTransformer {
   public static transform(project: IProject, expression: ts.CallExpression): ts.Node {
     if (expression.getSourceFile() == null) {
-      return expression;
+      return ts.factory.createIdentifier("FUCK");
     }
 
     const declaration: ts.Declaration | undefined = project.checker.getResolvedSignature(expression)?.declaration;
@@ -23,7 +23,6 @@ export abstract class CallTransformer {
     ) return expression;
 
     const { name } = project.checker.getTypeAtLocation(declaration).symbol;
-    console.log(name);
     const functor = METHOD_DECORATOR_PROCESSORS[name];
     if (functor === undefined) return expression;
     return functor(project, expression);

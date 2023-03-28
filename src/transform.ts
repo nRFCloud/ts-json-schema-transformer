@@ -22,19 +22,19 @@ export default function transform(program: ts.Program, options: IOptions = {}): 
 
   const schemaConfig: SchemaConfig = {
     ...DEFAULT_CONFIG,
-    jsDoc,
-    strictTuples,
-    encodeRefs,
-    additionalProperties,
+    jsDoc: jsDoc || DEFAULT_CONFIG.jsDoc,
+    strictTuples: strictTuples || DEFAULT_CONFIG.strictTuples,
+    encodeRefs: encodeRefs || DEFAULT_CONFIG.encodeRefs,
+    additionalProperties: additionalProperties || DEFAULT_CONFIG.additionalProperties,
   };
 
   const validationConfig: AJVOptions = {
     ...AJV_DEFAULTS,
-    loopRequired,
-    loopEnum,
-    removeAdditional,
-    coerceTypes,
-    useDefaults,
+    loopRequired: loopRequired || AJV_DEFAULTS.loopRequired,
+    loopEnum: loopEnum || AJV_DEFAULTS.loopEnum,
+    removeAdditional: removeAdditional || AJV_DEFAULTS.removeAdditional,
+    coerceTypes: coerceTypes || AJV_DEFAULTS.coerceTypes,
+    useDefaults: useDefaults || AJV_DEFAULTS.useDefaults,
   };
 
   const nodeParser = createParser(program, schemaConfig);
@@ -64,12 +64,11 @@ export default function transform(program: ts.Program, options: IOptions = {}): 
 export function buildFormats() {
   const dir = getTmpDir();
   const outfile = join(dir, "formats.js");
-  console.log(outfile);
   buildSync({
     format: "esm",
     minify: true,
     target: "node18",
-    entryPoints: [require.resolve("./formats.js")],
+    entryPoints: [require.resolve("./formats.mjs")],
     bundle: true,
     outfile,
     external: ["ajv"],

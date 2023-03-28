@@ -42,7 +42,11 @@ function convertValueToExpression(value: unknown): ts.Expression {
   } else if (typeof value === "number") {
     return ts.factory.createNumericLiteral(value);
   } else if (typeof value === "boolean") {
-    return ts.factory.createTrue();
+    if (value) {
+      return ts.factory.createTrue();
+    } else {
+      return ts.factory.createFalse();
+    }
   } else if (typeof value === "object") {
     if (Array.isArray(value)) {
       return ts.factory.createArrayLiteralExpression(
@@ -52,6 +56,8 @@ function convertValueToExpression(value: unknown): ts.Expression {
     return convertObjectToLiteralExpression(value as Record<string, unknown>);
   } else if (value === null) {
     return ts.factory.createNull();
+  } else if (value === undefined) {
+    return ts.factory.createIdentifier("undefined");
   } else {
     throw new Error(`Unknown type ${typeof value}`);
   }

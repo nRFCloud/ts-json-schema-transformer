@@ -35,6 +35,9 @@ export abstract class FileTransformer {
     context: ts.TransformationContext,
     node: ts.Node,
   ): ts.Node {
+    if (node.getSourceFile() == null) {
+      return node;
+    }
     return ts.visitEachChild(
       FileTransformer.try_transform_node(project, node),
       (child) => FileTransformer.iterate_node(project, context, child),

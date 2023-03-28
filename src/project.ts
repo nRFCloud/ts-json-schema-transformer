@@ -22,7 +22,7 @@ export type AJVOptions = Pick<
 export type SchemaConfig = Pick<Config, "jsDoc" | "strictTuples" | "encodeRefs" | "additionalProperties">;
 
 export const AJV_DEFAULTS: AJVOptions = {
-  useDefaults: true,
+  useDefaults: false,
   coerceTypes: true,
   loopRequired: 20,
 };
