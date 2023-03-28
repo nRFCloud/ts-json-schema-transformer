@@ -1,8 +1,8 @@
 import { buildSync } from "esbuild";
 import { join } from "path";
-import { createFormatter, createParser, DEFAULT_CONFIG, SchemaGenerator } from "ts-json-schema-generator";
+import { createFormatter, createParser, SchemaGenerator } from "ts-json-schema-generator";
 import * as ts from "typescript";
-import { AJV_DEFAULTS, AJVOptions, IOptions, IProject, SchemaConfig } from "./project.js";
+import { AJV_DEFAULTS, AJVOptions, IOptions, IProject, SCHEMA_DEFAULTS, SchemaConfig } from "./project.js";
 import { FileTransformer } from "./transformers/file-transformer.js";
 import { getTmpDir } from "./transformers/utils.js";
 
@@ -19,14 +19,18 @@ export default function transform(program: ts.Program, options: IOptions = {}): 
     coerceTypes,
     useDefaults,
     allErrors,
+    sortProps,
+    expose,
   } = options ?? {};
 
   const schemaConfig: SchemaConfig = {
-    ...DEFAULT_CONFIG,
-    jsDoc: jsDoc || DEFAULT_CONFIG.jsDoc,
-    strictTuples: strictTuples || DEFAULT_CONFIG.strictTuples,
-    encodeRefs: encodeRefs || DEFAULT_CONFIG.encodeRefs,
-    additionalProperties: additionalProperties || true,
+    ...SCHEMA_DEFAULTS,
+    jsDoc: jsDoc || SCHEMA_DEFAULTS.jsDoc,
+    strictTuples: strictTuples || SCHEMA_DEFAULTS.strictTuples,
+    encodeRefs: encodeRefs || SCHEMA_DEFAULTS.encodeRefs,
+    additionalProperties: additionalProperties || SCHEMA_DEFAULTS.additionalProperties,
+    sortProps: sortProps || SCHEMA_DEFAULTS.sortProps,
+    expose: expose || SCHEMA_DEFAULTS.expose,
   };
 
   const validationConfig: AJVOptions = {

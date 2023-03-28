@@ -37,6 +37,15 @@ describe("Validator", () => {
           },
           schemaPath: "#/definitions/SimpleType/required",
         },
+        {
+          instancePath: "",
+          keyword: "additionalProperties",
+          message: "must NOT have additional properties",
+          params: {
+            additionalProperty: "test",
+          },
+          schemaPath: "#/definitions/SimpleType/additionalProperties",
+        },
       ]);
     });
   });

@@ -307,7 +307,7 @@ Marks the property as deprecated.
 
 You can configure properties of schema and validator generation in the plugins config within your `tsconfig.json` file.
 
-```json
+```json5
 {
   "compilerOptions": {
     "plugins": [
@@ -320,7 +320,7 @@ You can configure properties of schema and validator generation in the plugins c
         "useDefaults": true,
 
         // Coerce properties of the validated object (ex: string to number)
-        "coerceTypes": true,
+        "coerceTypes": false,
 
         // Remove additional properties from the validated object
         "removeAdditional": false,
@@ -332,19 +332,25 @@ You can configure properties of schema and validator generation in the plugins c
         // How many enum values must be present before a loop is generated.
         "loopEnum": 100,
 
-        // Whether or not to return all errors encoutered or just the first one
+        // Whether to return all errors encoutered or just the first one
         "allErrors": true,
 
         // Schema options
 
-        // Whether or not to process jsDoc annotations
+        // Whether to process jsDoc annotations
         "jsDoc": "extended",
 
         // Do not allow additional items on tuples
         "strictTuples": false,
 
-        // Whether or not to allow additional properties on objects that don't have index signatures
-        "additionalProperties": false
+        // Whether to allow additional properties on objects that don't have index signatures
+        "additionalProperties": false,
+        
+        // What schemas should be exposed (given readable names)
+        "expose": "export",
+        
+        // Whether properties should be sorted (stable)
+        "sortProps": true,
       }
     ]
   }
