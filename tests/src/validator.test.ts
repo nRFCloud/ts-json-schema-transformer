@@ -1,4 +1,4 @@
-import { getValidator } from "ts-json-schema-transformer";
+import { getValidator } from "../../dist";
 import { SimpleType } from "./types";
 
 describe("Validator", () => {

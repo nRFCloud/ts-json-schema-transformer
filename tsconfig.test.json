@@ -14,7 +14,7 @@
       "jest"
     ],
     "paths": {
-      "ts-json-schema-transformer": [
+      "@nrfcloud/ts-json-schema-transformer": [
         "./dist"
       ]
     }

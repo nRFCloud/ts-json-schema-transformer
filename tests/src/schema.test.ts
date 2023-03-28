@@ -1,4 +1,4 @@
-import { getSchema } from "ts-json-schema-transformer";
+import { getSchema } from "../../dist";
 import { SimpleType, TenantId, UnionType } from "./types";
 
 describe("Schema", () => {
