@@ -9,7 +9,8 @@
     "node": ">=18.0.0"
   },
   "files": [
-    "dist"
+    "dist",
+    "package.json"
   ],
   "scripts": {
     "prepare": "husky install && ts-patch i -s",
