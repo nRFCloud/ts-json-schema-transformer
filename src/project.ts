@@ -17,7 +17,7 @@ export interface IProject {
 
 export type AJVOptions = Pick<
   Options,
-  "useDefaults" | "coerceTypes" | "removeAdditional" | "loopRequired" | "loopEnum"
+  "useDefaults" | "coerceTypes" | "removeAdditional" | "loopRequired" | "loopEnum" | "allErrors"
 >;
 export type SchemaConfig = Pick<Config, "jsDoc" | "strictTuples" | "encodeRefs" | "additionalProperties">;
 
@@ -25,6 +25,7 @@ export const AJV_DEFAULTS: AJVOptions = {
   useDefaults: false,
   coerceTypes: true,
   loopRequired: 20,
+  allErrors: true,
 };
 
 export type IOptions = AJVOptions & SchemaConfig;

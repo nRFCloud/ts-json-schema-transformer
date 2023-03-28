@@ -332,6 +332,9 @@ You can configure properties of schema and validator generation in the plugins c
         // How many enum values must be present before a loop is generated.
         "loopEnum": 100,
 
+        // Whether or not to return all errors encoutered or just the first one
+        "allErrors": true,
+
         // Schema options
 
         // Whether or not to process jsDoc annotations
@@ -364,10 +367,6 @@ Simply call `getSchema` and run the output through `JSON.stringify` and save it 
 
 The validator function returns a boolean, and sets the `errors` property on the function to an array of errors.
 [AJV Docs](https://ajv.js.org/api.html#validation-errors)
-
-#### How do I configure options on AJV or ts-json-schema-generator?
-
-You can't do this quite yet, but it will be available in the future.
 
 ### Contributing
 

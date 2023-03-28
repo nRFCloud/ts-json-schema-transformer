@@ -18,6 +18,7 @@ export default function transform(program: ts.Program, options: IOptions = {}): 
     removeAdditional,
     coerceTypes,
     useDefaults,
+    allErrors,
   } = options ?? {};
 
   const schemaConfig: SchemaConfig = {
@@ -25,7 +26,7 @@ export default function transform(program: ts.Program, options: IOptions = {}): 
     jsDoc: jsDoc || DEFAULT_CONFIG.jsDoc,
     strictTuples: strictTuples || DEFAULT_CONFIG.strictTuples,
     encodeRefs: encodeRefs || DEFAULT_CONFIG.encodeRefs,
-    additionalProperties: additionalProperties || DEFAULT_CONFIG.additionalProperties,
+    additionalProperties: additionalProperties || true,
   };
 
   const validationConfig: AJVOptions = {
@@ -35,6 +36,7 @@ export default function transform(program: ts.Program, options: IOptions = {}): 
     removeAdditional: removeAdditional || AJV_DEFAULTS.removeAdditional,
     coerceTypes: coerceTypes || AJV_DEFAULTS.coerceTypes,
     useDefaults: useDefaults || AJV_DEFAULTS.useDefaults,
+    allErrors: allErrors || AJV_DEFAULTS.allErrors,
   };
 
   const nodeParser = createParser(program, schemaConfig);
