@@ -20,11 +20,11 @@ at compile time using a custom typescript transformer.
 You can use any package manager. I prefer pnpm, but yarn and npm should work fine.
 
 ```bash
-pnpm add -D ts-json-schema-transformer
+pnpm add -D @nrfcloud/ts-json-schema-transformer
 # OR
-yarn add -D ts-json-schema-transformer
+yarn add -D @nrfcloud/ts-json-schema-transformer
 # OR
-npm install -D ts-json-schema-transformer
+npm install -D @nrfcloud/ts-json-schema-transformer
 ```
 
 #### Next, install your preferred typescript plugin solution
@@ -45,7 +45,7 @@ pnpm add -D ttypescript
   "compilerOptions": {
     "plugins": [
       {
-        "transform": "ts-json-schema-transformer/dist/transform"
+        "transform": "@nrfcloud/ts-json-schema-transformer/dist/transform"
       }
     ]
   }
@@ -57,7 +57,7 @@ pnpm add -D ttypescript
 ### General Usage
 
 ```typescript
-import { getSchema, getValidator } from "ts-json-schema-transformer";
+import { getSchema, getValidator } from "@nrfcloud/ts-json-schema-transformer";
 
 export interface InputEvent {
   foo: Duration;

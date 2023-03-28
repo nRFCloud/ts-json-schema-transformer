@@ -1,5 +1,5 @@
 {
-  "name": "ts-json-schema-transformer",
+  "name": "@nrfcloud/ts-json-schema-transformer",
   "version": "0.0.1",
   "description": "A TypeScript transformer that generates JSON schemas and validators from TypeScript interfaces",
   "type": "commonjs",
@@ -8,6 +8,9 @@
   "engines": {
     "node": ">=18.0.0"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "prepare": "husky install && ts-patch i -s",
     "lint": "dprint check && denolint --config .denolint.json",
