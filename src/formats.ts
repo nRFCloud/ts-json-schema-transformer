@@ -1,5 +1,5 @@
 /**
- * IMPORTANT: this filed must be exactly the same as formats.ts
+ * IMPORTANT: this filed must be exactly the same as formats.mts
  *
  * They both exist due to ESM import rules
  */
@@ -49,6 +49,27 @@ export const date_time = {
   compare: compareDateTime,
 };
 
+function compareIsoDateTime(dt1: string, dt2: string): number | undefined {
+  if (!(dt1 && dt2)) return undefined;
+  const [d1, t1] = dt1.split(DATE_TIME_SEPARATOR);
+  const [d2, t2] = dt2.split(DATE_TIME_SEPARATOR);
+  const res = compareDate(d1, d2);
+  if (res === undefined) return undefined;
+  return res || compareTime(t1, t2);
+}
+
+function compareIsoTime(t1: string, t2: string): number | undefined {
+  if (!(t1 && t2)) return undefined;
+  const a1 = TIME.exec(t1);
+  const a2 = TIME.exec(t2);
+  if (!(a1 && a2)) return undefined;
+  t1 = a1[1] + a1[2] + a1[3];
+  t2 = a2[1] + a2[2] + a2[3];
+  if (t1 > t2) return 1;
+  if (t1 < t2) return -1;
+  return 0;
+}
+
 // duration: https://tools.ietf.org/html/rfc3339#appendix-A
 export const duration = /^P(?!$)((\d+Y)?(\d+M)?(\d+D)?(T(?=\d)(\d+H)?(\d+M)?(\d+S)?)?|(\d+W)?)$/;
 const NOT_URI_FRAGMENT = /\/|:/;
@@ -59,6 +80,16 @@ export function uri(str: string): boolean {
   // http://jmrware.com/articles/2009/uri_regexp/URI_regex.html + optional protocol + required "."
   return NOT_URI_FRAGMENT.test(str) && URI.test(str);
 }
+
+export const iso_time = {
+  validate: /^(?:[0-2]\d:[0-5]\d:[0-5]\d|23:59:60)(?:\.\d+)?(?:z|[+-]\d\d(?::?\d\d)?)?$/i,
+  compare: compareIsoTime,
+};
+
+export const iso_date_time = {
+  validate: /^\d\d\d\d-[0-1]\d-[0-3]\d[t\s](?:[0-2]\d:[0-5]\d:[0-5]\d|23:59:60)(?:\.\d+)?(?:z|[+-]\d\d(?::?\d\d)?)?$/i,
+  compare: compareIsoDateTime,
+};
 
 export const uri_reference =
   /^(?:[a-z][a-z0-9+\-.]*:)?(?:\/?\/(?:(?:[a-z0-9\-._~!$&'()*+,;=:]|%[0-9a-f]{2})*@)?(?:\[(?:(?:(?:(?:[0-9a-f]{1,4}:){6}|::(?:[0-9a-f]{1,4}:){5}|(?:[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){4}|(?:(?:[0-9a-f]{1,4}:){0,1}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){3}|(?:(?:[0-9a-f]{1,4}:){0,2}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){2}|(?:(?:[0-9a-f]{1,4}:){0,3}[0-9a-f]{1,4})?::[0-9a-f]{1,4}:|(?:(?:[0-9a-f]{1,4}:){0,4}[0-9a-f]{1,4})?::)(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?))|(?:(?:[0-9a-f]{1,4}:){0,5}[0-9a-f]{1,4})?::[0-9a-f]{1,4}|(?:(?:[0-9a-f]{1,4}:){0,6}[0-9a-f]{1,4})?::)|[Vv][0-9a-f]+\.[a-z0-9\-._~!$&'()*+,;=:]+)\]|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)|(?:[a-z0-9\-._~!$&'"()*+,;=]|%[0-9a-f]{2})*)(?::\d*)?(?:\/(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})*)*|\/(?:(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})*)*)?|(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&'"()*+,;=:@]|%[0-9a-f]{2})*)*)?(?:\?(?:[a-z0-9\-._~!$&'"()*+,;=:@/?]|%[0-9a-f]{2})*)?(?:#(?:[a-z0-9\-._~!$&'"()*+,;=:@/?]|%[0-9a-f]{2})*)?$/i;

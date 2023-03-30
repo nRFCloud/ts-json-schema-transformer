@@ -1,5 +1,5 @@
 import { getValidator } from "../../dist";
-import { SimpleType } from "./types";
+import { ISODateTime, ISOTime, SimpleType } from "./types";
 
 export interface InputEvent {
   foo: TenantId;
@@ -81,6 +81,18 @@ describe("Validator", () => {
           schemaPath: "#/properties/other/maximum",
         },
       ]);
+    });
+  });
+
+  describe("Should validate formats", () => {
+    it("should validate iso_date_time", () => {
+      const validator = getValidator<ISODateTime>();
+      expect(validator("2021-01-01T00:00:00Z")).toBeTruthy();
+    });
+
+    it("should validate iso_time", () => {
+      const validator = getValidator<ISOTime>();
+      expect(validator("00:00:00Z")).toBeTruthy();
     });
   });
 

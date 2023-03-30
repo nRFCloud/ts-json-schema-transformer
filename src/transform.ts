@@ -1,12 +1,8 @@
-import { buildSync } from "esbuild";
-import { join } from "path";
 import { createFormatter, createParser, SchemaGenerator } from "ts-json-schema-generator";
 import * as ts from "typescript";
 import { AJV_DEFAULTS, AJVOptions, IOptions, IProject, SCHEMA_DEFAULTS, SchemaConfig } from "./project.js";
 import { FileTransformer } from "./transformers/file-transformer.js";
-import { getTmpDir } from "./transformers/utils.js";
 
-const formatsPath = buildFormats();
 export default function transform(program: ts.Program, options: IOptions = {}): ts.TransformerFactory<ts.SourceFile> {
   const {
     loopEnum,
@@ -57,7 +53,6 @@ export default function transform(program: ts.Program, options: IOptions = {}): 
     nodeParser: createParser(program, schemaConfig),
     schemaGenerator,
     typeFormatter: createFormatter(schemaConfig),
-    formatsPath,
   };
 
   return (context) => {
@@ -65,19 +60,4 @@ export default function transform(program: ts.Program, options: IOptions = {}): 
       return FileTransformer.transform(project, context, file);
     };
   };
-}
-
-export function buildFormats() {
-  const dir = getTmpDir();
-  const outfile = join(dir, "formats.js");
-  buildSync({
-    format: "esm",
-    minify: true,
-    target: "node18",
-    entryPoints: [require.resolve("./formats.mjs")],
-    bundle: true,
-    outfile,
-    external: ["ajv"],
-  });
-  return outfile;
 }

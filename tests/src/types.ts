@@ -8,6 +8,16 @@ export interface ComplexType {
   baz: boolean;
 }
 
+/**
+ * @format iso_time
+ */
+export type ISOTime = string;
+
+/**
+ * @format iso_date_time
+ */
+export type ISODateTime = string;
+
 export type ConditionalType<T> = T extends string ? string : number;
 
 export declare class Tagged<N extends string> {

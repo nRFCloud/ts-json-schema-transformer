@@ -12,7 +12,6 @@ export interface IProject {
   schemaGenerator: SchemaGenerator;
   typeFormatter: TypeFormatter;
   nodeParser: NodeParser;
-  formatsPath: string;
 }
 
 export type AJVOptions = Pick<

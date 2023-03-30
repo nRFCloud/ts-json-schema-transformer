@@ -34,7 +34,11 @@ should work, though I recommend `ts-patch` since it seems better supported.
 
 ```bash
 pnpm add -D ts-patch
-# OR
+
+# You'll want to add this line to your package.json prepare script
+pnpm ts-pach install -s
+
+# --- OR ---
 pnpm add -D ttypescript
 ```
 
@@ -168,6 +172,8 @@ Add a format validation to the schema
 - double: double according to the openApi 3.0.0 specification
 - password: password string according to the openApi 3.0.0 specification
 - binary: binary string according to the openApi 3.0.0 specification
+- iso_date_time: date-time according to ISO 8601
+- iso_time: time according to ISO 8601
 
 #### @pattern
 
@@ -306,6 +312,9 @@ Marks the property as deprecated.
 ### Configuration
 
 You can configure properties of schema and validator generation in the plugins config within your `tsconfig.json` file.
+The validation options map to the same options in the [AJV](https://ajv.js.org/options.html) library.
+The schema options map to the same options in the [ts-json-schema-generator](https://github.com/vega/ts-json-schema-generator#options) library.
+Note that not all options are exposed, though more could be added in the future.
 
 ```json5
 {
@@ -338,6 +347,9 @@ You can configure properties of schema and validator generation in the plugins c
         // Schema options
 
         // Whether to process jsDoc annotations
+        // none: Do not use JsDoc annotations.
+        // basic: Read JsDoc annotations to provide schema properties.
+        // extended (default): Also read @nullable, and @asType annotations.
         "jsDoc": "extended",
 
         // Do not allow additional items on tuples
@@ -347,6 +359,9 @@ You can configure properties of schema and validator generation in the plugins c
         "additionalProperties": false,
         
         // What schemas should be exposed (given readable names)
+        // all: Create shared $ref definitions for all types.
+        // none: Do not create shared $ref definitions.
+        // export (default): Create shared $ref definitions only for exported types (not tagged as `@internal`).
         "expose": "export",
         
         // Whether properties should be sorted (stable)

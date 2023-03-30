@@ -17,6 +17,8 @@ import {
   int64,
   ipv4,
   ipv6,
+  iso_date_time,
+  iso_time,
   json_pointer,
   json_pointer_uri_fragment,
   password,
@@ -85,7 +87,7 @@ export function fixAjvImportCode(code: string): string {
 }
 
 export function addFormats(ajv: Ajv) {
-  ajv.opts.code.formats = _`require(${__dirname + "/../formats.mjs"})`;
+  ajv.opts.code.formats = _`require(${__dirname + "/../generated/formats.mjs"})`;
   ajv.addFormat("uuid", uuid);
   ajv.addFormat("json_pointer", json_pointer);
   ajv.addFormat("json_pointer_uri_fragment", json_pointer_uri_fragment);
@@ -109,4 +111,6 @@ export function addFormats(ajv: Ajv) {
   ajv.addFormat("uri_reference", uri_reference);
   ajv.addFormat("uri_template", uri_template);
   ajv.addFormat("duration", duration);
+  ajv.addFormat("iso_time", iso_time);
+  ajv.addFormat("iso_date_time", iso_date_time);
 }

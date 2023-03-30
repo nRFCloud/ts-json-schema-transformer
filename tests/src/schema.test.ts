@@ -1,5 +1,5 @@
 import { getSchema } from "../../dist";
-import { SimpleType, TenantId, UnionType } from "./types";
+import { ISODateTime, ISOTime, SimpleType, TenantId, UnionType } from "./types";
 
 describe("Schema", () => {
   describe("Simple Schemas", () => {
@@ -62,6 +62,38 @@ describe("Schema", () => {
             "properties": { "foo": { "type": "string" } },
             "required": ["foo"],
             "additionalProperties": false,
+          },
+        },
+      });
+    });
+  });
+
+  describe("Formats", () => {
+    it("should generate an iso date time schema", () => {
+      const schema = getSchema<ISODateTime>();
+
+      expect(schema).toEqual({
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "$ref": "#/definitions/ISODateTime",
+        "definitions": {
+          "ISODateTime": {
+            "type": "string",
+            "format": "iso_date_time",
+          },
+        },
+      });
+    });
+
+    it("should generate an iso time schema", () => {
+      const schema = getSchema<ISOTime>();
+
+      expect(schema).toEqual({
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "$ref": "#/definitions/ISOTime",
+        "definitions": {
+          "ISOTime": {
+            "type": "string",
+            "format": "iso_time",
           },
         },
       });
