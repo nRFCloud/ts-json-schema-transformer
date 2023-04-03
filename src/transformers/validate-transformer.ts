@@ -1,8 +1,9 @@
 import Ajv from "ajv";
 import standaloneCode from "ajv/dist/standalone";
 import * as ts from "typescript";
+import { convertNamedFormats } from "../formats";
 import { IProject } from "../project.js";
-import { addFormats, bundleSource, fixAjvImportCode, getGenericArg } from "./utils.js";
+import { addFormatsAjv, bundleSource, fixAjvImportCode, getGenericArg } from "./utils.js";
 
 /**
  * This is where most of the magic happens.
@@ -18,8 +19,9 @@ export abstract class ValidateTransformer {
         optimize: true,
         lines: true,
       },
+      strictTypes: false,
     });
-    addFormats(ajv);
+    addFormatsAjv(ajv);
 
     // Get the type info
     const [type, node] = getGenericArg(project, expression);
@@ -30,6 +32,7 @@ export abstract class ValidateTransformer {
     }
 
     const schema = project.schemaGenerator.createSchemaFromNodes([node]);
+    convertNamedFormats(schema);
 
     const compiled = ajv.compile(schema);
 

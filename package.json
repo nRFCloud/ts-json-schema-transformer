@@ -1,6 +1,6 @@
 {
   "name": "@nrfcloud/ts-json-schema-transformer",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "description": "A TypeScript transformer that generates JSON schemas and validators from TypeScript interfaces",
   "type": "commonjs",
   "main": "dist/index.js",
@@ -35,23 +35,29 @@
   "author": "John Conley",
   "license": "MIT",
   "devDependencies": {
-    "typescript": "^4.9.5",
-    "ts-patch": "^2.1.0",
-    "dprint": "^0.35.3",
-    "@node-rs/deno-lint": "^1.16.0",
-    "@types/jest": "^29.5.0",
-    "@types/node": "^18.15.5",
     "@commitlint/cli": "^17.5.0",
     "@commitlint/config-conventional": "^17.4.4",
+    "@node-rs/deno-lint": "^1.16.0",
+    "@types/jest": "^29.5.0",
+    "@types/json-schema": "^7.0.11",
+    "@types/node": "^18.15.5",
+    "dprint": "^0.35.3",
     "husky": "^8.0.3",
-    "jest": "^29.5.0"
+    "jest": "^29.5.0",
+    "typescript": "^4.9.5"
   },
   "peerDependencies": {
     "typescript": "^4.9.5"
   },
   "dependencies": {
+    "@apidevtools/json-schema-ref-parser": "10.1.0",
+    "@types/json-schema-faker": "^0.5.1",
     "ajv": "^8.12.0",
     "esbuild": "^0.17.12",
+    "json-schema-faker": "^0.5.0-rcv.46",
     "ts-json-schema-generator": "^1.2.0"
+  },
+  "resolutions": {
+    "json-schema-ref-parser": "npm:@apidevtools/json-schema-ref-parser@10.1.0"
   }
 }

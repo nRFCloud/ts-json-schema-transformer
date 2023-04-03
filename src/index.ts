@@ -7,3 +7,7 @@ export function getSchema<T>(): JSONSchemaType<T> {
 export function getValidator<T>(): ValidateFunction<T> {
   throw new Error("Not implemented. Did you forget to run the transformer?");
 }
+
+export function getMockObject<T>(): T {
+  throw new Error("Not implemented. Did you forget to run the transformer?");
+}

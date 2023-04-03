@@ -78,7 +78,7 @@ describe("Schema", () => {
         "definitions": {
           "ISODateTime": {
             "type": "string",
-            "format": "iso_date_time",
+            "format": "iso-date-time",
           },
         },
       });
@@ -93,7 +93,7 @@ describe("Schema", () => {
         "definitions": {
           "ISOTime": {
             "type": "string",
-            "format": "iso_time",
+            "format": "iso-time",
           },
         },
       });

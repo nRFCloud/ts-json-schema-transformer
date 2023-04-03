@@ -123,6 +123,11 @@ Generates an AJV validator function for the given type.
 The generic type parameter is the type you want to generate a validator for, and the single input to the function.
 This function call is replaced by the generated validator at compile time.
 
+#### `getMockObject<T>(): T`
+
+Generate a mock object for the given type.
+Should support all formats as well as other constraints.
+
 ### JSDoc Tags
 
 You can add JSDoc tags to your interfaces and types to add additional schema information.
@@ -152,19 +157,19 @@ Add a format validation to the schema
 
 - date: full-date according to RFC3339
 - time: time (time-zone is mandatory).
-- date_time: date-time (time-zone is mandatory).
+- date-time: date-time (time-zone is mandatory).
 - duration: duration from RFC3339
 - uri: full URI.
-- uri_reference: URI reference, including full and relative URIs.
-- uri_template: URI template according to RFC6570
+- uri-reference: URI reference, including full and relative URIs.
+- uri-template: URI template according to RFC6570
 - email: email address.
 - hostname: host name according to RFC1034.
 - ipv4: IP address v4.
 - ipv6: IP address v6.
 - regex: tests whether a string is a valid regular expression by passing it to RegExp constructor.
 - uuid: Universally Unique IDentifier according to RFC4122.
-- json_pointer: JSON-pointer according to RFC6901.
-- relative_json_pointer: relative JSON-pointer according to this draft.
+- json-pointer: JSON-pointer according to RFC6901.
+- relative-json-pointer: relative JSON-pointer according to this draft.
 - byte: base64 encoded data according to the openApi 3.0.0 specification
 - int32: signed 32 bits integer according to the openApi 3.0.0 specification
 - int64: signed 64 bits according to the openApi 3.0.0 specification
@@ -172,8 +177,8 @@ Add a format validation to the schema
 - double: double according to the openApi 3.0.0 specification
 - password: password string according to the openApi 3.0.0 specification
 - binary: binary string according to the openApi 3.0.0 specification
-- iso_date_time: date-time according to ISO 8601
-- iso_time: time according to ISO 8601
+- iso-date-time: date-time according to ISO 8601
+- iso-time: time according to ISO 8601
 
 #### @pattern
 

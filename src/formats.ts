@@ -5,6 +5,7 @@
  */
 
 import type { Format } from "ajv";
+import { JSONSchema7 } from "json-schema";
 
 function compareDate(d1: string, d2: string): number | undefined {
   if (!(d1 && d2)) return undefined;
@@ -16,6 +17,7 @@ function compareDate(d1: string, d2: string): number | undefined {
 export const date = { validate: /^\d\d\d\d-[0-1]\d-[0-3]\d$/, compare: compareDate };
 
 const TIME = /^(\d\d):(\d\d):(\d\d)(\.\d+)?(z|[+-]\d\d(?::?\d\d)?)?$/i;
+
 function compareTime(t1: string, t2: string): number | undefined {
   if (!(t1 && t2)) return undefined;
   const a1 = TIME.exec(t1);
@@ -34,6 +36,7 @@ export const time = {
 };
 
 const DATE_TIME_SEPARATOR = /t|\s/i;
+
 function compareDateTime(dt1: string, dt2: string): number | undefined {
   if (!(dt1 && dt2)) return undefined;
   const [d1, t1] = dt1.split(DATE_TIME_SEPARATOR);
@@ -73,7 +76,7 @@ function compareIsoTime(t1: string, t2: string): number | undefined {
 // duration: https://tools.ietf.org/html/rfc3339#appendix-A
 export const duration = /^P(?!$)((\d+Y)?(\d+M)?(\d+D)?(T(?=\d)(\d+H)?(\d+M)?(\d+S)?)?|(\d+W)?)$/;
 const NOT_URI_FRAGMENT = /\/|:/;
-const URI =
+export const URI =
   /^(?:[a-z][a-z0-9+\-.]*:)(?:\/?\/(?:(?:[a-z0-9\-._~!$&'()*+,;=:]|%[0-9a-f]{2})*@)?(?:\[(?:(?:(?:(?:[0-9a-f]{1,4}:){6}|::(?:[0-9a-f]{1,4}:){5}|(?:[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){4}|(?:(?:[0-9a-f]{1,4}:){0,1}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){3}|(?:(?:[0-9a-f]{1,4}:){0,2}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){2}|(?:(?:[0-9a-f]{1,4}:){0,3}[0-9a-f]{1,4})?::[0-9a-f]{1,4}:|(?:(?:[0-9a-f]{1,4}:){0,4}[0-9a-f]{1,4})?::)(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?))|(?:(?:[0-9a-f]{1,4}:){0,5}[0-9a-f]{1,4})?::[0-9a-f]{1,4}|(?:(?:[0-9a-f]{1,4}:){0,6}[0-9a-f]{1,4})?::)|[Vv][0-9a-f]+\.[a-z0-9\-._~!$&'()*+,;=:]+)\]|(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)|(?:[a-z0-9\-._~!$&'()*+,;=]|%[0-9a-f]{2})*)(?::\d*)?(?:\/(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})*)*|\/(?:(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})*)*)?|(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})+(?:\/(?:[a-z0-9\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})*)*)(?:\?(?:[a-z0-9\-._~!$&'()*+,;=:@/?]|%[0-9a-f]{2})*)?(?:#(?:[a-z0-9\-._~!$&'()*+,;=:@/?]|%[0-9a-f]{2})*)?$/i;
 
 export function uri(str: string): boolean {
@@ -111,6 +114,7 @@ export const ipv4 = /^(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\
 export const ipv6 =
   /^((([0-9a-f]{1,4}:){7}([0-9a-f]{1,4}|:))|(([0-9a-f]{1,4}:){6}(:[0-9a-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9a-f]{1,4}:){5}(((:[0-9a-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9a-f]{1,4}:){4}(((:[0-9a-f]{1,4}){1,3})|((:[0-9a-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9a-f]{1,4}:){3}(((:[0-9a-f]{1,4}){1,4})|((:[0-9a-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9a-f]{1,4}:){2}(((:[0-9a-f]{1,4}){1,5})|((:[0-9a-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9a-f]{1,4}:){1}(((:[0-9a-f]{1,4}){1,6})|((:[0-9a-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9a-f]{1,4}){1,7})|((:[0-9a-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))$/i;
 const Z_ANCHOR = /[^\\]\\Z/;
+
 export function regex(str: string): boolean {
   if (Z_ANCHOR.test(str)) return false;
   try {
@@ -131,11 +135,13 @@ export const json_pointer_uri_fragment = /^#(?:\/(?:[a-z0-9_\-.!$&'()*+,;:=@]|%[
 export const relative_json_pointer = /^(?:0|[1-9][0-9]*)(?:#|(?:\/(?:[^~/]|~0|~1)*)*)$/;
 // the following formats are used by the openapi specification: https://spec.openapis.org/oas/v3.0.0#data-types
 // byte: https://github.com/miguelmota/is-base64
-const BYTE = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/gm;
+export const BYTE = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/gm;
+
 export function byte(str: string): boolean {
   BYTE.lastIndex = 0;
   return BYTE.test(str);
 }
+
 // signed 32 bit integer
 export const int32: Format = { type: "number", validate: validateInt32 };
 // signed 64 bit integer
@@ -151,6 +157,7 @@ export const binary = true;
 
 const MIN_INT32 = -(2 ** 31);
 const MAX_INT32 = 2 ** 31 - 1;
+
 function validateInt32(value: number): boolean {
   return Number.isInteger(value) && value <= MAX_INT32 && value >= MIN_INT32;
 }
@@ -162,4 +169,27 @@ function validateInt64(value: number): boolean {
 
 function validateNumber(): boolean {
   return true;
+}
+
+const formatMappings = {
+  "iso-date-time": "iso_date_time",
+  "iso-time": "iso_time",
+  "uri-reference": "uri_reference",
+  "uri-template": "uri_template",
+  "json-pointer": "json_pointer",
+  "relative-json-pointer": "relative_json_pointer",
+  "date-time": "date_time",
+} as { [key: string]: string };
+
+export function convertNamedFormats(schema: JSONSchema7) {
+  const currentFormat: string | undefined = schema.format;
+  if (currentFormat && currentFormat in formatMappings) {
+    schema.format = formatMappings[currentFormat];
+  }
+  const entries = Object.entries(schema);
+  for (const [, value] of entries) {
+    if (typeof value === "object") {
+      convertNamedFormats(value);
+    }
+  }
 }

@@ -85,14 +85,24 @@ describe("Validator", () => {
   });
 
   describe("Should validate formats", () => {
-    it("should validate iso_date_time", () => {
-      const validator = getValidator<ISODateTime>();
-      expect(validator("2021-01-01T00:00:00Z")).toBeTruthy();
+    const isoDateTimeValidator = getValidator<ISODateTime>();
+
+    it("should validate iso-date-time", () => {
+      expect(isoDateTimeValidator("2021-01-01T00:00:00Z")).toBeTruthy();
     });
 
+    it("should not validate iso-date-time", () => {
+      expect(isoDateTimeValidator("2021-01-01")).toBeFalsy();
+    });
+
+    const isoTimeValidator = getValidator<ISOTime>();
+
     it("should validate iso_time", () => {
-      const validator = getValidator<ISOTime>();
-      expect(validator("00:00:00Z")).toBeTruthy();
+      expect(isoTimeValidator("00:00:00Z")).toBeTruthy();
+    });
+
+    it("should not validate iso_time", () => {
+      expect(isoTimeValidator("2021-01-01")).toBeFalsy();
     });
   });
 

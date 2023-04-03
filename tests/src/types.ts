@@ -9,12 +9,12 @@ export interface ComplexType {
 }
 
 /**
- * @format iso_time
+ * @format iso-time
  */
 export type ISOTime = string;
 
 /**
- * @format iso_date_time
+ * @format iso-date-time
  */
 export type ISODateTime = string;
 

@@ -1,10 +1,12 @@
 import Ajv, { _ } from "ajv";
 import { BuildOptions, buildSync } from "esbuild";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import { format as jsfAddFormat, random as jsfRandom } from "json-schema-faker";
 import { join } from "path";
 import ts from "typescript";
 import {
   binary,
+  BYTE,
   byte,
   date,
   date_time,
@@ -57,6 +59,7 @@ export function getTmpDir() {
   }
   return dir;
 }
+
 export function bundleSource(source: string, options: BuildOptions): string {
   const dir = getTmpDir();
   const tempFilePath = join(dir, "temp.js");
@@ -86,7 +89,7 @@ export function fixAjvImportCode(code: string): string {
   return input;
 }
 
-export function addFormats(ajv: Ajv) {
+export function addFormatsAjv(ajv: Ajv) {
   ajv.opts.code.formats = _`require(${__dirname + "/../generated/formats.mjs"})`;
   ajv.addFormat("uuid", uuid);
   ajv.addFormat("json_pointer", json_pointer);
@@ -113,4 +116,63 @@ export function addFormats(ajv: Ajv) {
   ajv.addFormat("duration", duration);
   ajv.addFormat("iso_time", iso_time);
   ajv.addFormat("iso_date_time", iso_date_time);
+}
+
+export function addFormatsJsf() {
+  jsfAddFormat("uuid", () => jsfRandom.randexp(uuid.source).toString());
+  jsfAddFormat("relative-json-pointer", () => {
+    const test = jsfRandom.randexp(relative_json_pointer.source).toString();
+    console.log(test);
+    return test;
+  });
+  jsfAddFormat("byte", () => jsfRandom.randexp(BYTE.source).toString());
+  jsfAddFormat("password", () => jsfRandom.randexp("\S{8,20}").toString());
+  jsfAddFormat("binary", () => jsfRandom.randexp("\S{8,20}").toString());
+  jsfAddFormat("iso-time", () => jsfRandom.randexp(iso_time.validate.source).toString());
+  jsfAddFormat("iso-date-time", () => jsfRandom.randexp(iso_date_time.validate.source).toString());
+}
+
+/**
+ * takes a json object and recursively converts it to an object literal expression
+ */
+export function convertObjectToLiteralExpression(
+  object: Record<string, unknown>,
+): ts.Expression {
+  const properties: ts.ObjectLiteralElementLike[] = [];
+  for (const [key, value] of Object.entries(object)) {
+    properties.push(
+      ts.factory.createPropertyAssignment(
+        ts.factory.createStringLiteral(key),
+        convertValueToExpression(value),
+      ),
+    );
+  }
+  return ts.factory.createObjectLiteralExpression(properties);
+}
+
+export function convertValueToExpression(value: unknown): ts.Expression {
+  if (typeof value === "string") {
+    return ts.factory.createStringLiteral(value);
+  } else if (typeof value === "number") {
+    return ts.factory.createNumericLiteral(value);
+  } else if (typeof value === "boolean") {
+    if (value) {
+      return ts.factory.createTrue();
+    } else {
+      return ts.factory.createFalse();
+    }
+  } else if (typeof value === "object") {
+    if (Array.isArray(value)) {
+      return ts.factory.createArrayLiteralExpression(
+        value.map(convertValueToExpression),
+      );
+    }
+    return convertObjectToLiteralExpression(value as Record<string, unknown>);
+  } else if (value === null) {
+    return ts.factory.createNull();
+  } else if (value === undefined) {
+    return ts.factory.createIdentifier("undefined");
+  } else {
+    throw new Error(`Unknown type ${typeof value}`);
+  }
 }
