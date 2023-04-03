@@ -1,7 +1,7 @@
 import Ajv, { _ } from "ajv";
 import { BuildOptions, buildSync } from "esbuild";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
-import { format as jsfAddFormat, random as jsfRandom } from "json-schema-faker";
+const { JSONSchemaFaker: jsf } = require("json-schema-faker");
 import { join } from "path";
 import ts from "typescript";
 import {
@@ -119,17 +119,17 @@ export function addFormatsAjv(ajv: Ajv) {
 }
 
 export function addFormatsJsf() {
-  jsfAddFormat("uuid", () => jsfRandom.randexp(uuid.source).toString());
-  jsfAddFormat("relative-json-pointer", () => {
-    const test = jsfRandom.randexp(relative_json_pointer.source).toString();
+  jsf.format("uuid", () => jsf.random.randexp(uuid.source).toString());
+  jsf.format("relative-json-pointer", () => {
+    const test = jsf.random.randexp(relative_json_pointer.source).toString();
     console.log(test);
     return test;
   });
-  jsfAddFormat("byte", () => jsfRandom.randexp(BYTE.source).toString());
-  jsfAddFormat("password", () => jsfRandom.randexp("\S{8,20}").toString());
-  jsfAddFormat("binary", () => jsfRandom.randexp("\S{8,20}").toString());
-  jsfAddFormat("iso-time", () => jsfRandom.randexp(iso_time.validate.source).toString());
-  jsfAddFormat("iso-date-time", () => jsfRandom.randexp(iso_date_time.validate.source).toString());
+  jsf.format("byte", () => jsf.random.randexp(BYTE.source).toString());
+  jsf.format("password", () => jsf.random.randexp("\S{8,20}").toString());
+  jsf.format("binary", () => jsf.random.randexp("\S{8,20}").toString());
+  jsf.format("iso-time", () => jsf.random.randexp(iso_time.validate.source).toString());
+  jsf.format("iso-date-time", () => jsf.random.randexp(iso_date_time.validate.source).toString());
 }
 
 /**

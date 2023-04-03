@@ -1,8 +1,5 @@
 lockfileVersion: 5.4
 
-overrides:
-  json-schema-ref-parser: npm:@apidevtools/json-schema-ref-parser@10.1.0
-
 specifiers:
   '@apidevtools/json-schema-ref-parser': 10.1.0
   '@commitlint/cli': ^17.5.0
@@ -10,23 +7,21 @@ specifiers:
   '@node-rs/deno-lint': ^1.16.0
   '@types/jest': ^29.5.0
   '@types/json-schema': ^7.0.11
-  '@types/json-schema-faker': ^0.5.1
   '@types/node': ^18.15.5
   ajv: ^8.12.0
   dprint: ^0.35.3
   esbuild: ^0.17.12
   husky: ^8.0.3
   jest: ^29.5.0
-  json-schema-faker: ^0.5.0-rcv.46
+  json-schema-faker: npm:@jfconley/json-schema-faker@0.5.0-rcv.48
   ts-json-schema-generator: ^1.2.0
   typescript: ^4.9.5
 
 dependencies:
   '@apidevtools/json-schema-ref-parser': 10.1.0
-  '@types/json-schema-faker': 0.5.1
   ajv: 8.12.0
   esbuild: 0.17.12
-  json-schema-faker: 0.5.0-rcv.46
+  json-schema-faker: /@jfconley/json-schema-faker/0.5.0-rcv.48
   ts-json-schema-generator: 1.2.0
 
 devDependencies:
@@ -998,6 +993,14 @@ packages:
       chalk: 4.1.2
     dev: true
 
+  /@jfconley/json-schema-faker/0.5.0-rcv.48:
+    resolution: {integrity: sha512-n5I703+lUEDqXEmwJ7MUcBzpoYX+MJK9grhn65kqUHNNm0aPN5qr88zXchrybkZCkig8tp7GF++HOgjLazV6rA==}
+    hasBin: true
+    dependencies:
+      json-schema-ref-parser: /@apidevtools/json-schema-ref-parser/10.1.0
+      jsonpath-plus: 5.1.0
+    dev: false
+
   /@jridgewell/gen-mapping/0.1.1:
     resolution: {integrity: sha512-sQXCasFk+U8lWYEe66WxRDOE9PjVz4vSM51fTu3Hw+ClTpUSQb718772vH3pyS5pShp6lvQM7SxgIDXXXmOX7w==}
     engines: {node: '>=6.0.0'}
@@ -1276,12 +1279,6 @@ packages:
       expect: 29.5.0
       pretty-format: 29.5.0
     dev: true
-
-  /@types/json-schema-faker/0.5.1:
-    resolution: {integrity: sha512-gXkZKNeQEMLFH2aYVG+ZSxdrLN2MCi0V6CoB3RAcUSz1BTfXntCOpTDdrfx+rTQ3x2sctFjM3gGauqDVxDXI7g==}
-    dependencies:
-      '@types/json-schema': 7.0.11
-    dev: false
 
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
@@ -2679,14 +2676,6 @@ packages:
   /json-parse-even-better-errors/2.3.1:
     resolution: {integrity: sha512-xyFwyhro/JEof6Ghe2iz2NcXoj2sloNsWr/XsERDK/oiPCfaNhl5ONfp+jQdAZRQQ0IJWNzH9zIZF7li91kh2w==}
     dev: true
-
-  /json-schema-faker/0.5.0-rcv.46:
-    resolution: {integrity: sha512-Q+sGrxptZfezwm7M9W9VmHT9E8s5fWPCaRC4J2zUjb3CmDsxokiCBdHdS/psu91Tafc/ITv+GtIztGzUVT2zIg==}
-    hasBin: true
-    dependencies:
-      json-schema-ref-parser: /@apidevtools/json-schema-ref-parser/10.1.0
-      jsonpath-plus: 5.1.0
-    dev: false
 
   /json-schema-traverse/1.0.0:
     resolution: {integrity: sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug==}

@@ -1,6 +1,6 @@
 {
   "name": "@nrfcloud/ts-json-schema-transformer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A TypeScript transformer that generates JSON schemas and validators from TypeScript interfaces",
   "type": "commonjs",
   "main": "dist/index.js",
@@ -51,13 +51,9 @@
   },
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "10.1.0",
-    "@types/json-schema-faker": "^0.5.1",
     "ajv": "^8.12.0",
     "esbuild": "^0.17.12",
-    "json-schema-faker": "^0.5.0-rcv.46",
+    "json-schema-faker": "npm:@jfconley/json-schema-faker@0.5.0-rcv.48",
     "ts-json-schema-generator": "^1.2.0"
-  },
-  "resolutions": {
-    "json-schema-ref-parser": "npm:@apidevtools/json-schema-ref-parser@10.1.0"
   }
 }
