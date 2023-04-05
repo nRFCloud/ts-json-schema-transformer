@@ -62,6 +62,7 @@ pnpm add -D ttypescript
 
 ```typescript
 import { getSchema, getValidator } from "@nrfcloud/ts-json-schema-transformer";
+import { getMockObject } from "./index";
 
 export interface InputEvent {
   foo: Duration;
@@ -74,7 +75,7 @@ export interface InputEvent {
 }
 
 /**
- * @format date_time
+ * @format date-time
  */
 type Duration = string;
 
@@ -107,6 +108,9 @@ validator({});
 
 // Get the validator errors
 console.log(validator.errors);
+
+// Generate a mock object
+const mock = getMockObject<InputEvent>();
 ```
 
 ### Methods

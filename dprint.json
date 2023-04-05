@@ -5,7 +5,7 @@
   },
   "markdown": {
   },
-  "includes": ["**/*.{ts,tsx,js,jsx,cjs,mjs,json,md}"],
+  "includes": ["src/**/*.{ts,tsx,js,jsx,cjs,mjs,json,md}","tests/src/**/*.{ts,tsx,js,jsx,cjs,mjs,json,md}"],
   "excludes": [
     "**/node_modules",
     "**/*-lock.json"

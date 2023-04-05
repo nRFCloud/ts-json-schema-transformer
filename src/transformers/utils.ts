@@ -123,7 +123,6 @@ export function addFormatsAjv(ajv: Ajv) {
 }
 
 export function addFormatsJsf() {
-  jsf.format("uuid", () => jsf.random.randexp(uuid.source).toString());
   jsf.format("relative-json-pointer", () => {
     const test = jsf.random.randexp(relative_json_pointer.source).toString();
     console.log(test);
