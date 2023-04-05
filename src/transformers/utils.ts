@@ -1,7 +1,9 @@
+import $RefParser from "@apidevtools/json-schema-ref-parser";
+import _dereference from "@apidevtools/json-schema-ref-parser/dist/lib/dereference.js";
 import Ajv, { _ } from "ajv";
 import { BuildOptions, buildSync } from "esbuild";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
-const { JSONSchemaFaker: jsf } = require("json-schema-faker");
+import { JSONSchema7 } from "json-schema";
 import { join } from "path";
 import ts from "typescript";
 import {
@@ -33,6 +35,8 @@ import {
   uuid,
 } from "../formats";
 import { IProject } from "../project.js";
+
+const { JSONSchemaFaker: jsf } = require("json-schema-faker");
 
 export function getGenericArg(project: IProject, expression: ts.CallExpression): [ts.Type, ts.Node, boolean] {
   return expression.typeArguments && expression.typeArguments[0]
@@ -176,3 +180,36 @@ export function convertValueToExpression(value: unknown): ts.Expression {
     throw new Error(`Unknown type ${typeof value}`);
   }
 }
+
+/**
+ * Inlines the root $ref in a json schema
+ */
+export function derefJSONSchemaRoot(schema: JSONSchema7) {
+  const deepCopy = JSON.parse(JSON.stringify(schema));
+
+  const { "$ref": rootRef, ...baseSchema } = deepCopy;
+  const wrappedSchema: JSONSchema7 = {
+    ...baseSchema,
+    properties: {
+      temp: {
+        $ref: rootRef,
+      },
+    },
+  };
+
+  dereference(wrappedSchema);
+  const derefedSchema = wrappedSchema.properties?.temp as JSONSchema7;
+  delete wrappedSchema.properties;
+  return {
+    ...wrappedSchema,
+    ...derefedSchema,
+  };
+}
+
+export const dereference = (schema: JSONSchema7) => {
+  const parser = new $RefParser();
+  parser.parse(schema);
+  parser.schema = schema;
+  _dereference(parser, { dereference: { circular: true } }); // NOTE: mutates schema
+  return schema;
+};

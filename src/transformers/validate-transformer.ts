@@ -76,7 +76,7 @@ export abstract class ValidateTransformer {
       [],
     );
 
-    // We must strip the ranges since these nodes from a source file that doesn't exist.
+    // We must strip the ranges since these nodes are from a source file that doesn't exist.
     // This is the only way to fix this for both ESM and CommonJS.
     stripRanges(call);
     return call;

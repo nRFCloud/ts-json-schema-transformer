@@ -13,7 +13,6 @@ export abstract class GetSchemaTransformer {
     }
 
     const schema = project.schemaGenerator.createSchemaFromNodes([node]);
-
     return convertObjectToLiteralExpression(schema as Record<string, unknown>);
   }
 }

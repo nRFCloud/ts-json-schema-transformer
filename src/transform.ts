@@ -26,7 +26,7 @@ export default function transform(program: ts.Program, options: IOptions = {}): 
     encodeRefs: encodeRefs || SCHEMA_DEFAULTS.encodeRefs,
     additionalProperties: additionalProperties || SCHEMA_DEFAULTS.additionalProperties,
     sortProps: sortProps || SCHEMA_DEFAULTS.sortProps,
-    expose: expose || SCHEMA_DEFAULTS.expose,
+    expose,
   };
 
   const validationConfig: AJVOptions = {
@@ -39,8 +39,12 @@ export default function transform(program: ts.Program, options: IOptions = {}): 
     allErrors: allErrors || AJV_DEFAULTS.allErrors,
   };
 
-  const nodeParser = createParser(program, schemaConfig);
-  const typeFormatter = createFormatter(schemaConfig);
+  const nodeParser = createParser(program, {
+    ...schemaConfig,
+  });
+  const typeFormatter = createFormatter({
+    ...schemaConfig,
+  });
 
   const schemaGenerator = new SchemaGenerator(program, nodeParser, typeFormatter, schemaConfig);
   const project: IProject = {

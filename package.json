@@ -1,6 +1,6 @@
 {
   "name": "@nrfcloud/ts-json-schema-transformer",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A TypeScript transformer that generates JSON schemas and validators from TypeScript interfaces",
   "type": "commonjs",
   "main": "dist/index.js",
@@ -20,6 +20,12 @@
     "!dist/tsconfig.tsbuildinfo",
     "package.json"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js"
+    }
+  },
   "repository": "https://github.com/nRFCloud/ts-json-schema-transformer",
   "scripts": {
     "prepare": "husky install && ts-patch i -s",
@@ -28,7 +34,7 @@
     "clean": "rm -rf dist && rm -rf tests/dist && rm -rf src/generated",
     "formats": "mkdir -p src/generated && cp src/formats.ts src/generated/formats.mts",
     "compile": "pnpm formats && tsc",
-    "compile:test": "pnpm clean && pnpm compile && tsc --project tsconfig.test.json",
+    "compile:test": "pnpm clean && pnpm compile && tsc --project tests/tsconfig.json",
     "test": "pnpm compile:test && jest",
     "prepublish": "pnpm clean && pnpm compile && pnpm test"
   },

@@ -1,5 +1,5 @@
-import { getMockObject, getValidator } from "../../dist";
-import { ISODateTime, ISOTime, SimpleType, TenantId, UnionType } from "./types";
+import { getMockObject, getValidator } from "@nrfcloud/ts-json-schema-transformer";
+import { ISODateTime, ISOTime, ServiceProcessStatus, SimpleType, TenantId, ULID, UnionType } from "./types";
 
 describe("Mock Objects", () => {
   describe("Simple Mocks", () => {
@@ -25,6 +25,13 @@ describe("Mock Objects", () => {
 
       expect(validator(mock)).toBeTruthy();
     });
+
+    it("Should from a type the includes an encoded reference", () => {
+      const mock = getMockObject<ServiceProcessStatus>();
+      const validator = getValidator<ServiceProcessStatus>();
+
+      expect(validator(mock)).toBeTruthy();
+    });
   });
 
   describe("Formats", () => {
@@ -38,6 +45,22 @@ describe("Mock Objects", () => {
     it("should generate an iso time schema", () => {
       const mock = getMockObject<ISOTime>();
       const validator = getValidator<ISOTime>();
+
+      expect(validator(mock)).toBeTruthy();
+    });
+  });
+
+  describe("Patterns", () => {
+    it("should generate a ULID", () => {
+      const mock = getMockObject<ULID>();
+      const validator = getValidator<ULID>();
+
+      expect(validator(mock)).toBeTruthy();
+    });
+
+    it("should generate a UUID", () => {
+      const mock = getMockObject<TenantId>();
+      const validator = getValidator<TenantId>();
 
       expect(validator(mock)).toBeTruthy();
     });

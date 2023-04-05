@@ -1,5 +1,5 @@
 import { getSchema } from "../../dist";
-import { ISODateTime, ISOTime, SimpleType, TenantId, UnionType } from "./types";
+import { ISODateTime, ISOTime, SimpleType, TenantId, ULID, UnionType } from "./types";
 
 describe("Schema", () => {
   describe("Simple Schemas", () => {
@@ -95,6 +95,24 @@ describe("Schema", () => {
             "type": "string",
             "format": "iso-time",
           },
+        },
+      });
+    });
+  });
+
+  describe("Pattern", () => {
+    it("should generate a ULID pattern", () => {
+      const schema = getSchema<ULID>();
+
+      expect(schema).toEqual({
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "$ref": "#/definitions/ULID",
+        "definitions": {
+          "ULID": {
+            "$ref": "#/definitions/Nominal%3Cstring%2C%22ULID%22%3E",
+            "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+          },
+          "Nominal<string,\"ULID\">": { "type": ["string"] },
         },
       });
     });

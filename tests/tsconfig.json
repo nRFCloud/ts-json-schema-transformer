@@ -1,0 +1,25 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "plugins": [
+      {
+        "transform": "../dist/transform.js"
+      }
+    ],
+    "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo",
+    "types": [
+      "node",
+      "jest"
+    ],
+    "paths": {
+      "@nrfcloud/ts-json-schema-transformer": [
+        "../dist"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*"
+  ]
+}
