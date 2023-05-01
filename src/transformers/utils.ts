@@ -125,7 +125,6 @@ export function addFormatsAjv(ajv: Ajv) {
 export function addFormatsJsf() {
   jsf.format("relative-json-pointer", () => {
     const test = jsf.random.randexp(relative_json_pointer.source).toString();
-    console.log(test);
     return test;
   });
   jsf.format("byte", () => jsf.random.randexp(BYTE.source).toString());

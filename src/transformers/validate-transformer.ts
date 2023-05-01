@@ -1,9 +1,7 @@
-import Ajv from "ajv";
-import standaloneCode from "ajv/dist/standalone";
 import * as ts from "typescript";
-import { convertNamedFormats } from "../formats";
 import { IProject } from "../project.js";
-import { addFormatsAjv, bundleSource, fixAjvImportCode, getGenericArg } from "./utils.js";
+import { schemaToTs } from "../transformer-utils";
+import { getGenericArg } from "./utils.js";
 
 /**
  * This is where most of the magic happens.
@@ -11,18 +9,6 @@ import { addFormatsAjv, bundleSource, fixAjvImportCode, getGenericArg } from "./
  */
 export abstract class ValidateTransformer {
   public static transform(project: IProject, expression: ts.CallExpression): ts.Node {
-    const ajv = new Ajv({
-      ...project.options.validation,
-      code: {
-        esm: true,
-        source: true,
-        optimize: true,
-        lines: true,
-      },
-      strictTypes: false,
-    });
-    addFormatsAjv(ajv);
-
     // Get the type info
     const [type, node] = getGenericArg(project, expression);
     if (type.isTypeParameter()) {
@@ -32,34 +18,8 @@ export abstract class ValidateTransformer {
     }
 
     const schema = project.schemaGenerator.createSchemaFromNodes([node]);
-    convertNamedFormats(schema);
 
-    const compiled = ajv.compile(schema);
-
-    // Provide scoped values to the validator function.
-    // This includes referenced schemas and validators.
-    // Additionally, replace the generated validator export with a default export;
-    const scoped = standaloneCode(ajv, compiled).replace(/export const validate = \S+?;/g, "");
-
-    const validatorBody = fixAjvImportCode(scoped);
-    const bundleValidator = `${
-      bundleSource(validatorBody, {
-        bundle: true,
-        platform: "node",
-        target: "node18",
-        format: "esm",
-        minify: true,
-        external: ["ajv"],
-      })
-    }`;
-
-    const wrappedValidator = bundleValidator.replace(/export\s*?{\s*?(\S+?) as default\s*?};/g, "return $1;");
-    const sourceFile = ts.createSourceFile("temp.js", wrappedValidator, ts.ScriptTarget.ES5, true);
-
-    const bodyExpression = ts.factory.createBlock(
-      sourceFile.statements,
-      false,
-    );
+    const bodyExpression = schemaToTs(schema, project.options.validation);
 
     const functionExpression = ts.factory.createArrowFunction(
       undefined,
@@ -75,21 +35,6 @@ export abstract class ValidateTransformer {
       undefined,
       [],
     );
-
-    // We must strip the ranges since these nodes are from a source file that doesn't exist.
-    // This is the only way to fix this for both ESM and CommonJS.
-    stripRanges(call);
     return call;
   }
-}
-
-/**
- * Strip all ranges from a node and its children.
- * This is a nasty hack to get around the fact that we're creating nodes from a source file that doesn't exist.
- */
-function stripRanges(node: ts.Node) {
-  (node as { pos: number }).pos = -1;
-  (node as { end: number }).end = -1;
-
-  ts.forEachChild(node, stripRanges);
 }
