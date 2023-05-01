@@ -6,7 +6,7 @@ import { convertNamedFormats } from "./formats";
 import { AJVOptions } from "./project";
 import { addFormatsAjv, bundleSource, fixAjvImportCode } from "./transformers/utils";
 
-export function schemaToTs(schema: JSONSchema7, options?: AJVOptions) {
+export function schemaToValidator(schema: JSONSchema7, options?: AJVOptions) {
   const ajv = new Ajv({
     ...options,
     code: {
@@ -50,7 +50,21 @@ export function schemaToTs(schema: JSONSchema7, options?: AJVOptions) {
 
   stripRanges(bodyExpression);
 
-  return bodyExpression;
+  const functionExpression = ts.factory.createArrowFunction(
+    undefined,
+    undefined,
+    [],
+    undefined,
+    undefined,
+    bodyExpression,
+  );
+
+  const call = ts.factory.createCallExpression(
+    functionExpression,
+    undefined,
+    [],
+  );
+  return call;
 }
 
 /**

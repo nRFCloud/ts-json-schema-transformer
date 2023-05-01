@@ -1,6 +1,6 @@
 import * as ts from "typescript";
 import { IProject } from "../project.js";
-import { schemaToTs } from "../transformer-utils";
+import { schemaToValidator } from "../transformer-utils";
 import { getGenericArg } from "./utils.js";
 
 /**
@@ -19,22 +19,6 @@ export abstract class ValidateTransformer {
 
     const schema = project.schemaGenerator.createSchemaFromNodes([node]);
 
-    const bodyExpression = schemaToTs(schema, project.options.validation);
-
-    const functionExpression = ts.factory.createArrowFunction(
-      undefined,
-      undefined,
-      [],
-      undefined,
-      undefined,
-      bodyExpression,
-    );
-
-    const call = ts.factory.createCallExpression(
-      functionExpression,
-      undefined,
-      [],
-    );
-    return call;
+    return schemaToValidator(schema, project.options.validation);
   }
 }
