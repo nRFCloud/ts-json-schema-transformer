@@ -12,6 +12,12 @@ export interface InputEvent {
 }
 
 /**
+ * @maxLength 10
+ * @minLength 1
+ */
+export type ShortString = string;
+
+/**
  * @format date_time
  */
 export type TenantId = string;
@@ -106,5 +112,16 @@ describe("Validator", () => {
     });
   });
 
+  describe("Should validate string length", () => {
+    const validator = getValidator<ShortString>();
+
+    it("should validate string length", () => {
+      expect(validator("a")).toBeTruthy();
+    });
+
+    it("should not validate string length", () => {
+      expect(validator("aaaaaaaaaaaaaaaaaaaa")).toBeFalsy();
+    });
+  });
   // TODO: more tests
 });

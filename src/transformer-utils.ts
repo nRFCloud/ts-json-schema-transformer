@@ -36,7 +36,6 @@ export function schemaToValidator(schema: JSONSchema7, options?: AJVOptions) {
       target: "node18",
       format: "esm",
       minify: true,
-      external: ["ajv"],
     })
   }`;
 
