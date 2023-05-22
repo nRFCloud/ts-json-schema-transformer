@@ -1,0 +1,10 @@
+Script changes:
+  - packages/scripts/**/*
+
+Infrastructure changes:
+  - packages/deployment/**/*
+  - packages/*/src/aws/**/*
+
+Implementation changes:
+  - packages/*/src/**/*
+  - !packages/*/src/aws/**/*

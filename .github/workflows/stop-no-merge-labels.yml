@@ -1,0 +1,17 @@
+name: Block merging PRs with 'no-merge' label
+
+on:
+  pull_request:
+    types: [synchronize, opened, reopened, labeled, unlabeled]
+
+jobs:
+  no-merge:
+    if: ${{ contains(github.event.*.labels.*.name, 'no-merge') }}
+    name: Block merging PRs with no-merge label
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail due to existing label
+        run: |
+          echo "Pull request is labeled as 'no-merge'."
+          echo "This workflow fails so that the pull request cannot be merged."
+          exit 1
