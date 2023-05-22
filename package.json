@@ -50,7 +50,7 @@
     "compile:test": "pnpm clean && pnpm compile && tsc --project tests/tsconfig.json",
     "test": "pnpm compile:test && jest --json --outputFile=reports/report.json",
     "prepublish": "pnpm clean && pnpm compile && pnpm test",
-    "release": "pnpm semantic-release"
+    "release": "pnpm prepublish && pnpm semantic-release"
   },
   "author": "John Conley",
   "license": "MIT",
