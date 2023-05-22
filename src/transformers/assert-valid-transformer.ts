@@ -27,10 +27,3 @@ export abstract class AssertValidTransformer {
     ]);
   }
 }
-
-function stripRanges(node: ts.Node) {
-  (node as { pos: number }).pos = -1;
-  (node as { end: number }).end = -1;
-
-  ts.forEachChild(node, stripRanges);
-}
