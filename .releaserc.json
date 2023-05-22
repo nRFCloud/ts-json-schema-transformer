@@ -1,0 +1,32 @@
+{
+  "branches": [
+    {
+      "name": "main",
+      "channel": "dev",
+      "prerelease": "dev"
+    },
+    "release"
+  ],
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/changelog",
+    ["@semantic-release/npm", {
+      "tarballDir": "zipped"
+    }],
+    [
+      "@semantic-release/github",
+      {
+        "successComment": false,
+        "addReleases": "bottom",
+        "failTitle": false,
+        "assets": [
+          {
+            "path": "zipped/*.tgz",
+            "label": "Download"
+          }
+        ]
+      }
+    ]
+  ]
+}

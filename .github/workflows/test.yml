@@ -30,8 +30,6 @@ jobs:
         continue-on-error: true
       - name: Prepare
         run: pnpm i
-      - name: Build
-        run: pnpm build
       - name: Run unit tests
         run: pnpm test
       - name: Publish coverage
