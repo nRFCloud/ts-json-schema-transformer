@@ -48,7 +48,7 @@
     "formats": "mkdir -p src/generated && cp src/formats.ts src/generated/formats.mts",
     "compile": "pnpm formats && tsc",
     "compile:test": "pnpm clean && pnpm compile && tsc --project tests/tsconfig.json",
-    "test": "pnpm compile:test && jest",
+    "test": "pnpm compile:test && jest --json --outputFile=reports/report.json",
     "prepublish": "pnpm clean && pnpm compile && pnpm test",
     "release": "pnpm semantic-release"
   },
