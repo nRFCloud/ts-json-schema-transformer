@@ -1,6 +1,7 @@
 import * as path from "path";
 import ts from "typescript";
 import { IProject } from "../project.js";
+import { AssertValidTransformer } from "./assert-valid-transformer.js";
 import { GetMockObjectTransformer } from "./get-mock-object-transformer";
 import { GetSchemaTransformer } from "./get-schema-transformer.js";
 import { ValidateTransformer } from "./validate-transformer.js";
@@ -36,4 +37,5 @@ const METHOD_DECORATOR_PROCESSORS: Record<string, Task> = {
   "getSchema": GetSchemaTransformer.transform,
   "getValidator": ValidateTransformer.transform,
   "getMockObject": GetMockObjectTransformer.transform,
+  "assertValid": AssertValidTransformer.transform,
 };
