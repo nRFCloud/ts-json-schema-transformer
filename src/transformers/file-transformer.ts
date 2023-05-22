@@ -85,21 +85,45 @@ export abstract class FileTransformer {
     importIdentifier = ts.factory.createUniqueName(namedImport);
     namedImports.set(namedImport, importIdentifier);
 
-    FileTransformer.addStatementToFile(
-      file,
-      ts.factory.createImportDeclaration(
-        undefined,
-        ts.factory.createImportClause(
-          false,
+    if (file.impliedNodeFormat == null || file.impliedNodeFormat === ts.ModuleKind.CommonJS) {
+      FileTransformer.addStatementToFile(
+        file,
+        ts.factory.createVariableStatement(
           undefined,
-          ts.factory.createNamedImports([
-            ts.factory.createImportSpecifier(false, ts.factory.createIdentifier(namedImport), importIdentifier),
-          ]),
+          [ts.factory.createVariableDeclaration(
+            importIdentifier,
+            undefined,
+            undefined,
+            ts.factory.createPropertyAccessExpression(
+              ts.factory.createCallExpression(
+                ts.factory.createIdentifier("require"),
+                undefined,
+                [ts.factory.createStringLiteral(packageName)],
+              ),
+              namedImport,
+            ),
+          )],
         ),
-        ts.factory.createStringLiteral(packageName),
-      ),
-      "start",
-    );
+        "start",
+      );
+    } else {
+      FileTransformer.addStatementToFile(
+        file,
+        ts.factory.createImportDeclaration(
+          undefined,
+          ts.factory.createImportClause(
+            false,
+            undefined,
+            ts.factory.createNamedImports([
+              ts.factory.createImportSpecifier(false, ts.factory.createIdentifier(namedImport), importIdentifier),
+            ]),
+          ),
+          ts.factory.createStringLiteral(packageName),
+        ),
+        "start",
+      );
+    }
+
     FileTransformer.IMPORT_MAP.set(file.fileName, imports);
     return importIdentifier;
   }
