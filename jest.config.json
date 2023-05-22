@@ -1,4 +1,0 @@
-{
-  "testEnvironment": "node",
-  "testMatch": ["<rootDir>/tests/dist/**/*.test.js"]
-}

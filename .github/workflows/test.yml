@@ -1,0 +1,50 @@
+name: Unit Tests
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref_name }}
+  cancel-in-progress: true
+env:
+  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+jobs:
+  unit-tests:
+    name: Run unit tests for this service
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.2.0
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+        # Ignore the failure of a step and avoid terminating the job.
+        continue-on-error: true
+      - name: Prepare
+        run: pnpm i
+      - name: Build
+        run: pnpm build
+      - name: Run unit tests
+        run: pnpm test
+      - name: Publish coverage
+        if: always()
+        uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+          coverage-file: reports/report.json
+          base-coverage-file: reports/report.json
+      - name: Publish report
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Unit Tests
+          path: reports/junit.xml
+          reporter: jest-junit
+          fail-on-error: false
