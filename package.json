@@ -64,7 +64,7 @@
     "husky": "^8.0.3",
     "jest": "^29.5.0",
     "typescript": "^5.0.4",
-    "ts-patch": "^3.0.0-rc2"
+    "ts-patch": "3.0.0-beta3"
   },
   "peerDependencies": {
     "typescript": ">=4.9.5"
