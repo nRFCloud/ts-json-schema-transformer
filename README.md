@@ -97,7 +97,7 @@ interface Type2 {
 // Most syntax is supported, even unions and conditional types
 type union = Type1 | Type2;
 
-// Geneerate a JSON schema
+// Generate a JSON schema
 const schema = getSchema<InputEvent>();
 
 // Generate an AJV validator function
@@ -111,6 +111,20 @@ console.log(validator.errors);
 
 // Generate a mock object
 const mock = getMockObject<InputEvent>();
+
+// Assert method to throw errors upon validation failure
+try {
+  assertValid<InputEvent>(mock);
+} catch (error) {
+  // ... handle error
+}
+
+// TS can narrow the type after an assertValid call expression
+const fn = (obj: SimpleType | string) => {
+    assertValid<SimpleType>(obj);
+    // We know obj is a SimpleType from this point forward
+    console.log(obj.foo);
+};
 ```
 
 ### Methods
@@ -131,6 +145,10 @@ This function call is replaced by the generated validator at compile time.
 
 Generate a mock object for the given type.
 Should support all formats as well as other constraints.
+
+#### `assertValid<T>(obj: unknown): asserts obj is T`
+
+Validates that a given object satisfies the constraints defined in the given generic type parameter's schema. The method will throw an error if validation fails. This function call is replaced a wrapped validator method at compile time.
 
 ### JSDoc Tags
 
@@ -397,6 +415,12 @@ Simply call `getSchema` and run the output through `JSON.stringify` and save it 
 
 The validator function returns a boolean, and sets the `errors` property on the function to an array of errors.
 [AJV Docs](https://ajv.js.org/api.html#validation-errors)
+
+#### assertValid versus getValidator?
+
+The key difference here from a function-standpoint is that `assertValid` is a method that will throw an error upon validation failure, and the `getValidator` method returns an AJV validator. By using `getValidator`, you can utilize and access all of the AJV validator's properties (e.g. errors, schema, etc), which may be useful for some usecases.
+
+Frequent usage of `assertValid` may contribute to a spike in filesize in the transpiled file, this is more apparent for larger schemas.
 
 ### Contributing
 
