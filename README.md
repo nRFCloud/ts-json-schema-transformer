@@ -184,6 +184,7 @@ Add a format validation to the schema
 - uri: full URI.
 - uri-reference: URI reference, including full and relative URIs.
 - uri-template: URI template according to RFC6570
+- url: full URL.
 - email: email address.
 - hostname: host name according to RFC1034.
 - ipv4: IP address v4.
