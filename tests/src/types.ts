@@ -25,6 +25,11 @@ export type ISOTime = string;
  */
 export type ISODateTime = string;
 
+/**
+ * @format url
+ */
+export type ServiceURL = string;
+
 export type ConditionalType<T> = T extends string ? string : number;
 
 export declare class Tagged<N extends string> {

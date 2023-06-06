@@ -32,6 +32,7 @@ import {
   uri,
   uri_reference,
   uri_template,
+  url,
   uuid,
 } from "../formats";
 import { IProject } from "../project.js";
@@ -120,6 +121,7 @@ export function addFormatsAjv(ajv: Ajv) {
   ajv.addFormat("duration", duration);
   ajv.addFormat("iso_time", iso_time);
   ajv.addFormat("iso_date_time", iso_date_time);
+  ajv.addFormat("url", url);
 }
 
 export function addFormatsJsf() {
