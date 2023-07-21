@@ -13,7 +13,7 @@ at compile time using a custom typescript transformer.
 
 #### Requirements
 
-- typescript >=4.9.x < 5
+- typescript >= 5
 
 #### First, install the package
 
