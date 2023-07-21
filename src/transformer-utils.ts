@@ -1,5 +1,6 @@
 import Ajv from "ajv";
 import standaloneCode from "ajv/dist/standalone";
+import { randomUUID } from "crypto";
 import { JSONSchema7 } from "json-schema";
 import * as ts from "typescript";
 import { convertNamedFormats } from "./formats";
@@ -40,7 +41,7 @@ export function schemaToValidator(schema: JSONSchema7, options?: AJVOptions) {
   }`;
 
   const wrappedValidator = bundleValidator.replace(/export\s*?{\s*?(\S+?) as default\s*?};/g, "return $1;");
-  const sourceFile = ts.createSourceFile("temp.js", wrappedValidator, ts.ScriptTarget.ES5, true);
+  const sourceFile = ts.createSourceFile(randomUUID(), wrappedValidator, ts.ScriptTarget.ES5, true);
 
   const bodyExpression = ts.factory.createBlock(
     sourceFile.statements,

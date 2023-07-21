@@ -1,8 +1,9 @@
 import $RefParser from "@apidevtools/json-schema-ref-parser";
 import _dereference from "@apidevtools/json-schema-ref-parser/dist/lib/dereference.js";
 import Ajv, { _ } from "ajv";
+import { randomUUID } from "crypto";
 import { BuildOptions, buildSync } from "esbuild";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "fs";
 import { JSONSchema7 } from "json-schema";
 import { join } from "path";
 import ts from "typescript";
@@ -67,15 +68,19 @@ export function getTmpDir() {
 
 export function bundleSource(source: string, options: BuildOptions): string {
   const dir = getTmpDir();
-  const tempFilePath = join(dir, "temp.js");
-  const outfile = join(dir, "temp.bundled.js");
+  const tmpPrefix = randomUUID();
+  const tempFilePath = join(dir, `${tmpPrefix}.temp.js`);
+  const outfile = join(dir, `${tmpPrefix}.temp.bundled.js`);
   writeFileSync(tempFilePath, source);
   buildSync({
     ...options,
     entryPoints: [tempFilePath],
     outfile,
   });
-  return readFileSync(outfile, "utf-8");
+  const bundled = readFileSync(outfile, "utf-8");
+  rmSync(tempFilePath);
+  rmSync(outfile);
+  return bundled;
 }
 
 export function fixAjvImportCode(code: string): string {
