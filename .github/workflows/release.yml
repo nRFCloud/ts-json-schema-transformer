@@ -1,34 +1,52 @@
+name: Conditional Release
 on:
   push:
     branches:
       - main
       - release
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref_name }}
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 env:
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 jobs:
-    release:
-      name: Release
-      runs-on: ubuntu-latest
-      timeout-minutes: 15
-      steps:
-        - uses: actions/checkout@v3
-        - uses: pnpm/action-setup@v2
-          with:
-            version: 8.2.0
-            fetch-depth: 0
-        - name: Use Node.js
-          uses: actions/setup-node@v3
-          with:
-            node-version: 18.x
-            cache: 'pnpm'
-            registry-url: 'https://registry.npmjs.org'
-        - name: Prepare
-          run: pnpm i --frozen-lockfile
-        - name: Release
-          env:
-            GH_TOKEN: ${{ github.token }}
-          run: pnpm release
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.2.0
+          fetch-depth: 0
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Prepare
+        run: pnpm i --frozen-lockfile
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          # This expects you to have a script called release which does a build for your packages and calls changeset publish
+          publish: pnpm release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish notification
+        if: steps.changesets.outputs.published == 'true'
+        uses: rtCamp/action-slack-notify@12e36fc18b0689399306c2e0b3e0f2978b7f1ee7 #v2.2.0
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          MSG_MINIMAL: true
+          SLACK_TITLE: Version published
+          SLACK_LINK_NAMES: true
+          SLACK_FOOTER: ''
+          SLACK_MESSAGE: |
+            @here
+            ts-json-schema-transformer
+            A new version of ${GITHUB_REPOSITORY} has been published to npm
