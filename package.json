@@ -1,6 +1,6 @@
 {
   "name": "@nrfcloud/ts-json-schema-transformer",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A TypeScript transformer that generates JSON schemas and validators from TypeScript interfaces",
   "type": "commonjs",
   "main": "dist/index.js",
