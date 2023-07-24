@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - release
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 env:
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
