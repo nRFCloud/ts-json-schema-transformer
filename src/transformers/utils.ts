@@ -40,6 +40,11 @@ import { IProject } from "../project.js";
 
 const { JSONSchemaFaker: jsf } = require("json-schema-faker");
 
+export function hasTransformMarker(node: ts.Node): boolean {
+  const jsdoc = ts.getJSDocTags(node);
+  return jsdoc.some((tag) => tag.tagName.getText() === "transformer" && tag.comment === "ts-json-schema-transformer");
+}
+
 export function getGenericArg(project: IProject, expression: ts.CallExpression): [ts.Type, ts.Node, boolean] {
   return expression.typeArguments && expression.typeArguments[0]
     ? [
