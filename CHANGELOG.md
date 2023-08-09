@@ -1,5 +1,11 @@
 # @nrfcloud/ts-json-schema-transformer
 
+## 1.2.3
+
+### Patch Changes
+
+- f1bd3de: prevent transformer from removing source refs
+
 ## 1.2.2
 
 ### Patch Changes
