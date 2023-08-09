@@ -21,6 +21,11 @@ export abstract class FileTransformer {
         ...transformed.statements,
         ...nodesToAdd.end,
       ],
+      file.isDeclarationFile,
+      file.referencedFiles,
+      file.typeReferenceDirectives,
+      file.hasNoDefaultLib,
+      file.libReferenceDirectives,
     );
 
     FileTransformer.FILE_NODE_MAP.delete(file.fileName);
