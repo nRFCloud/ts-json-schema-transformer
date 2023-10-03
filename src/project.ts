@@ -1,6 +1,7 @@
 import type { Options } from "ajv";
-import { Config, NodeParser, SchemaGenerator, TypeFormatter } from "ts-json-schema-generator";
+import { Config, NodeParser, TypeFormatter } from "ts-json-schema-generator";
 import * as ts from "typescript";
+import { SchemaGenerator } from "./schema-generator";
 
 export interface IProject {
   program: ts.Program;
@@ -20,7 +21,7 @@ export type AJVOptions = Pick<
 >;
 export type SchemaConfig = Pick<
   Config,
-  "sortProps" | "expose" | "jsDoc" | "strictTuples" | "encodeRefs" | "additionalProperties"
+  "sortProps" | "expose" | "jsDoc" | "strictTuples" | "encodeRefs"
 >;
 
 export const AJV_DEFAULTS: AJVOptions = {
@@ -37,7 +38,6 @@ export const SCHEMA_DEFAULTS: SchemaConfig = {
   sortProps: true,
   strictTuples: false,
   encodeRefs: true,
-  additionalProperties: false,
 };
 
 export type IOptions = AJVOptions & SchemaConfig;

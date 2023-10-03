@@ -1,13 +1,13 @@
-import { createFormatter, createParser, SchemaGenerator } from "ts-json-schema-generator";
+import { createFormatter, createParser } from "ts-json-schema-generator";
 import * as ts from "typescript";
 import { AJV_DEFAULTS, AJVOptions, IOptions, IProject, SCHEMA_DEFAULTS, SchemaConfig } from "./project.js";
+import { SchemaGenerator } from "./schema-generator.js";
 import { FileTransformer } from "./transformers/file-transformer.js";
 
 export default function transform(program: ts.Program, options: IOptions = {}): ts.TransformerFactory<ts.SourceFile> {
   const {
     loopEnum,
     loopRequired,
-    additionalProperties,
     encodeRefs,
     strictTuples,
     jsDoc,
@@ -24,7 +24,6 @@ export default function transform(program: ts.Program, options: IOptions = {}): 
     jsDoc: jsDoc || SCHEMA_DEFAULTS.jsDoc,
     strictTuples: strictTuples || SCHEMA_DEFAULTS.strictTuples,
     encodeRefs: encodeRefs || SCHEMA_DEFAULTS.encodeRefs,
-    additionalProperties: additionalProperties || SCHEMA_DEFAULTS.additionalProperties,
     sortProps: sortProps || SCHEMA_DEFAULTS.sortProps,
     expose,
   };
@@ -39,14 +38,7 @@ export default function transform(program: ts.Program, options: IOptions = {}): 
     allErrors: allErrors || AJV_DEFAULTS.allErrors,
   };
 
-  const nodeParser = createParser(program, {
-    ...schemaConfig,
-  });
-  const typeFormatter = createFormatter({
-    ...schemaConfig,
-  });
-
-  const schemaGenerator = new SchemaGenerator(program, nodeParser, typeFormatter, schemaConfig);
+  const schemaGenerator = new SchemaGenerator(program, schemaConfig);
   const project: IProject = {
     checker: program.getTypeChecker(),
     options: {

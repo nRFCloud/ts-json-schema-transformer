@@ -80,3 +80,16 @@ export const ServiceProcessStatuses = {
 export type ServiceProcessStatus = UnionValues<typeof ServiceProcessStatuses>;
 
 export type UnionValues<T> = T[keyof T];
+
+export type ExampleBaseType = {
+  name: string;
+};
+
+export type ExampleExtendedType1 = ExampleBaseType & {
+  lat: number;
+  lon: number;
+};
+
+export type ExampleExtendedType2 = ExampleBaseType & {
+  description: string;
+};

@@ -26,9 +26,19 @@ export function getMockObject<T>(): T {
 
 /**
  * Assert that an object is valid according to the provided type
+ * Validates that the object has at least the properties declared in the type argument.
  * @transformer ts-json-schema-transformer
  */
 export function assertValid<T = never, U extends T = T>(_obj: unknown): asserts _obj is U {
+  throw new Error("Not implemented. Did you forget to run the transformer?");
+}
+
+/**
+ * Assert that an object is valid according to the provided type.
+ * Validates that the object has all and only the properties declared in the type argument.
+ * @transformer ts-json-schema-transformer
+ */
+export function assertValidStrict<T = never, U extends T = T>(_obj: unknown): asserts _obj is U {
   throw new Error("Not implemented. Did you forget to run the transformer?");
 }
 
