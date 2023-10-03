@@ -4,6 +4,7 @@ import { AssertValidStrictTransformer, AssertValidTransformer } from "./assert-v
 import { GetMockObjectTransformer } from "./get-mock-object-transformer";
 import { GetSchemaTransformer } from "./get-schema-transformer.js";
 import { hasTransformMarker } from "./utils";
+import { StrictValidateTransformer } from "./validate-transformer";
 import { ValidateTransformer } from "./validate-transformer.js";
 
 export abstract class CallTransformer {
@@ -32,6 +33,7 @@ type Task = (project: IProject, expression: ts.CallExpression) => ts.Node;
 const METHOD_DECORATOR_PROCESSORS: Record<string, Task> = {
   "getSchema": GetSchemaTransformer.transform,
   "getValidator": ValidateTransformer.transform,
+  "getStrictValidator": StrictValidateTransformer.transform,
   "getMockObject": GetMockObjectTransformer.transform,
   "assertValid": AssertValidTransformer.transform,
   "assertValidStrict": AssertValidStrictTransformer.transform,

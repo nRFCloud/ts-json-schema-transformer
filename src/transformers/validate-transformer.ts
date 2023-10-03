@@ -9,16 +9,26 @@ import { getGenericArg } from "./utils.js";
  */
 export abstract class ValidateTransformer {
   public static transform(project: IProject, expression: ts.CallExpression): ts.Node {
-    // Get the type info
-    const [type, node] = getGenericArg(project, expression);
-    if (type.isTypeParameter()) {
-      throw new Error(
-        `Error on getSchema: non-specified generic argument.`,
-      );
-    }
-
-    const schema = project.schemaGenerator.createSchemaFromNodes([node]);
-
-    return schemaToValidator(schema, project.options.validation);
+    return transform(project, expression, true);
   }
 }
+
+export abstract class StrictValidateTransformer {
+  public static transform(project: IProject, expression: ts.CallExpression): ts.Node {
+    return transform(project, expression);
+  }
+}
+
+const transform = (project: IProject, expression: ts.CallExpression, additionalProperties = false): ts.Node => {
+  // Get the type info
+  const [type, node] = getGenericArg(project, expression);
+  if (type.isTypeParameter()) {
+    throw new Error(
+      `Error on getSchema: non-specified generic argument.`,
+    );
+  }
+
+  const schema = project.schemaGenerator.createSchemaFromNodes([node], additionalProperties);
+
+  return schemaToValidator(schema, project.options.validation);
+};

@@ -10,9 +10,19 @@ export function getSchema<T>(): JSONSchemaType<T> {
 
 /**
  * Get a validator for the provided type
+ * Validates that the object has at least the properties declared in the type argument.
  * @transformer ts-json-schema-transformer
  */
 export function getValidator<T>(): ValidateFunction<T> {
+  throw new Error("Not implemented. Did you forget to run the transformer?");
+}
+
+/**
+ * Get a validator for the provided type
+ * Validates that the object has all and only the properties declared in the type argument.
+ * @transformer ts-json-schema-transformer
+ */
+export function getStrictValidator<T>(): ValidateFunction<T> {
   throw new Error("Not implemented. Did you forget to run the transformer?");
 }
 

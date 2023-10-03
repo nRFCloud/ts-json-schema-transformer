@@ -1,4 +1,4 @@
-import { getValidator } from "../../dist";
+import { getStrictValidator, getValidator } from "@nrfcloud/ts-json-schema-transformer";
 import { ISODateTime, ISOTime, SimpleType } from "./types";
 
 export interface InputEvent {
@@ -25,15 +25,17 @@ export type TenantId = string;
 describe("Validator", () => {
   describe("Simple Schema", () => {
     const validator = getValidator<SimpleType>();
+    const strictValidator = getStrictValidator<SimpleType>();
 
     it("should validate a simple schema", () => {
       expect(validator({ foo: "bar" })).toBeTruthy();
+      expect(validator({ foo: "bar", additional: "property" })).toBeTruthy();
     });
 
     it("should not validate a simple schema", () => {
-      expect(validator({ test: true })).toBeFalsy();
+      expect(strictValidator({ test: true })).toBeFalsy();
 
-      expect(validator.errors).toEqual([
+      expect(strictValidator.errors).toEqual([
         {
           instancePath: "",
           keyword: "required",
@@ -49,6 +51,21 @@ describe("Validator", () => {
           message: "must NOT have additional properties",
           params: {
             additionalProperty: "test",
+          },
+          schemaPath: "#/definitions/SimpleType/additionalProperties",
+        },
+      ]);
+    });
+
+    it("should not validate additional properties", () => {
+      expect(strictValidator({ foo: "bar", additional: "property" })).toBeFalsy();
+      expect(strictValidator.errors).toEqual([
+        {
+          instancePath: "",
+          keyword: "additionalProperties",
+          message: "must NOT have additional properties",
+          params: {
+            additionalProperty: "additional",
           },
           schemaPath: "#/definitions/SimpleType/additionalProperties",
         },
