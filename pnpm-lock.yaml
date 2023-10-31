@@ -18,8 +18,8 @@ dependencies:
     specifier: npm:@jfconley/json-schema-faker@0.5.0-rcv.48
     version: /@jfconley/json-schema-faker@0.5.0-rcv.48
   ts-json-schema-generator:
-    specifier: 1.3.0-next.7
-    version: 1.3.0-next.7
+    specifier: ^1.4.0
+    version: 1.4.0
 
 devDependencies:
   '@babel/preset-env':
@@ -59,11 +59,11 @@ devDependencies:
     specifier: ^16.0.0
     version: 16.0.0
   ts-patch:
-    specifier: 3.0.0-beta3
-    version: 3.0.0-beta3
+    specifier: ^3.0.2
+    version: 3.0.2
   typescript:
-    specifier: ^5.1.6
-    version: 5.1.6
+    specifier: ^5.2.2
+    version: 5.2.2
 
 packages:
 
@@ -4057,7 +4057,7 @@ packages:
       jest-util: 29.5.0
       natural-compare: 1.4.0
       pretty-format: 29.5.0
-      semver: 7.3.8
+      semver: 7.5.4
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -4803,14 +4803,6 @@ packages:
     hasBin: true
     dev: true
 
-  /semver@7.3.8:
-    resolution: {integrity: sha512-NB1ctGL5rlHrPJtFDVIVzTyQylMLu9N9VICA6HSFJo8MCGVTMW6gfpicwKmmK/dAjTOrqu5l63JJOpDSrAis3A==}
-    engines: {node: '>=10'}
-    hasBin: true
-    dependencies:
-      lru-cache: 6.0.0
-    dev: true
-
   /semver@7.5.4:
     resolution: {integrity: sha512-1bCSESV6Pv+i21Hvpxp3Dx+pSD8lIPt8uVjRrxAUt/nbswYc+tK6Y2btiULjd4+fnq15PX+nqQDC7Oft7WkwcA==}
     engines: {node: '>=10'}
@@ -5083,8 +5075,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /ts-json-schema-generator@1.3.0-next.7:
-    resolution: {integrity: sha512-jCL4T4X1+2oxXCnYeYAJMkC+y/qJQRXKHs7rUOpvdPH8FMXJt+e43v2TLyvZ1/08Qgu46+bWj3AinXMM6nZIuQ==}
+  /ts-json-schema-generator@1.4.0:
+    resolution: {integrity: sha512-wm8vyihmGgYpxrqRshmYkWGNwEk+sf3xV2rUgxv8Ryeh7bSpMO7pZQOht+2rS002eDkFTxR7EwRPXVzrS0WJTg==}
     engines: {node: '>=10.0.0'}
     hasBin: true
     dependencies:
@@ -5094,18 +5086,18 @@ packages:
       json5: 2.2.3
       normalize-path: 3.0.0
       safe-stable-stringify: 2.4.3
-      typescript: 5.1.6
+      typescript: 5.2.2
     dev: false
 
-  /ts-patch@3.0.0-beta3:
-    resolution: {integrity: sha512-WAuauq0u3jPWJLJRVQi4tz01XQ1KHi05sPxUrzjGx4xUweoCzYtpLHaTlbcBVw0u7iptQQ8hPZNCS36C6Uu8vw==}
+  /ts-patch@3.0.2:
+    resolution: {integrity: sha512-iTg8euqiNsNM1VDfOsVIsP0bM4kAVXU38n7TGQSkky7YQX/syh6sDPIRkvSS0HjT8ZOr0pq1h+5Le6jdB3hiJQ==}
     hasBin: true
     dependencies:
       chalk: 4.1.2
       global-prefix: 3.0.0
       minimist: 1.2.8
       resolve: 1.22.3
-      semver: 7.3.8
+      semver: 7.5.4
       strip-ansi: 6.0.1
     dev: true
 
@@ -5190,8 +5182,8 @@ packages:
       is-typed-array: 1.1.12
     dev: true
 
-  /typescript@5.1.6:
-    resolution: {integrity: sha512-zaWCozRZ6DLEWAWFrVDz1H6FVXzUSfTy5FUMWsQlU8Ym5JP9eO4xkTIROFCQvhQf61z6O/G6ugw3SgAnvvm+HA==}
+  /typescript@5.2.2:
+    resolution: {integrity: sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==}
     engines: {node: '>=14.17'}
     hasBin: true
 
