@@ -41,7 +41,7 @@
   },
   "repository": "https://github.com/nRFCloud/ts-json-schema-transformer",
   "scripts": {
-    "prepare": "husky install && ts-patch i -s",
+    "prepare": "husky install && ts-patch i -s ",
     "lint": "dprint check && denolint --config .denolint.json",
     "fix": "dprint fmt && denolint --config .denolint.json",
     "clean": "rm -rf dist && rm -rf tests/dist && rm -rf src/generated",
