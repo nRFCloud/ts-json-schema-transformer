@@ -1,5 +1,11 @@
 # @nrfcloud/ts-json-schema-transformer
 
+## 1.2.4
+
+### Patch Changes
+
+- 4371654: update dependencies
+
 ## 1.2.3
 
 ### Patch Changes
