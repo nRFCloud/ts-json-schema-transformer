@@ -1,4 +1,4 @@
-import { assertValid } from "@nrfcloud/ts-json-schema-transformer";
+import { assertValid, ValidationError } from "@nrfcloud/ts-json-schema-transformer";
 import { ServiceURL, SimpleType } from "./types";
 
 describe("Simple Assert Test", () => {
@@ -23,5 +23,16 @@ describe("Simple Assert Test", () => {
     };
 
     fn(simpleType);
+  });
+
+  it("should throw ValidationError object", () => {
+    let err;
+    try {
+      assertValid<SimpleType>("2021-01-01T00:00:00Z");
+    } catch (error) {
+      err = error;
+    } finally {
+      expect(err).toBeInstanceOf(ValidationError);
+    }
   });
 });
