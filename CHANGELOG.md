@@ -1,5 +1,11 @@
 # @nrfcloud/ts-json-schema-transformer
 
+## 1.2.5
+
+### Patch Changes
+
+- bbb411d: Generic error object replaced with ValidationError for assertValid
+
 ## 1.2.4
 
 ### Patch Changes

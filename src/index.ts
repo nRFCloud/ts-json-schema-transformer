@@ -32,12 +32,15 @@ export function assertValid<T = never, U extends T = T>(_obj: unknown): asserts 
   throw new Error("Not implemented. Did you forget to run the transformer?");
 }
 
+export class ValidationError extends Error {
+}
+
 /**
  * @internal
  */
 export function validationAssertion(validator: ValidateFunction<unknown>, obj: unknown) {
   if (!validator(obj)) {
-    throw Error(`Validation error: ${validator.errors?.map(error => JSON.stringify(error)).join(", ")}`);
+    throw new ValidationError(`Validation error: ${validator.errors?.map(error => JSON.stringify(error)).join(", ")}`);
   }
   return obj;
 }
