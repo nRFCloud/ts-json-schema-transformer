@@ -8,10 +8,6 @@ import { ValidateTransformer } from "./validate-transformer.js";
 
 export abstract class CallTransformer {
   public static transform(project: IProject, expression: ts.CallExpression): ts.Node {
-    if (expression.getSourceFile() == null) {
-      return ts.factory.createIdentifier("FUCK");
-    }
-
     const declaration: ts.Declaration | undefined = project.checker.getResolvedSignature(expression)?.declaration;
     if (declaration == null) return expression;
     if (!ts.isFunctionDeclaration(declaration)) return expression;

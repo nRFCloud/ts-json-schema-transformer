@@ -15,11 +15,12 @@
     "types": [
       "node"
     ],
+    "removeComments": false,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "stripInternal": true,
-    "paths": {}
+    "paths": {},
   },
   "include": [
     "src/**/*",
