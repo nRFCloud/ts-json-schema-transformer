@@ -1,5 +1,15 @@
 # @nrfcloud/ts-json-schema-transformer
 
+## 1.3.0
+
+### Minor Changes
+
+- f7b6c73: update to ts 5.3
+
+### Patch Changes
+
+- d46b75b: upgrade packages
+
 ## 1.2.5
 
 ### Patch Changes
