@@ -71,6 +71,8 @@
     "typescript": "^5.3.3"
   },
   "tsp": {
+    "name": "ts-json-schema-transformer",
+    "transformer": "dist/transform.js",
     "tscOptions": {
       "parseAllJsDoc": true
     }
