@@ -8,7 +8,6 @@
         "transform": "../dist/transform.js"
       }
     ],
-    "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo",
     "types": [
       "node",
       "jest"
