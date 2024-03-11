@@ -1,5 +1,11 @@
 # @nrfcloud/ts-json-schema-transformer
 
+## 1.4.1
+
+### Patch Changes
+
+- 70948df: fix bug with negative numeric literals
+
 ## 1.4.0
 
 ### Minor Changes
