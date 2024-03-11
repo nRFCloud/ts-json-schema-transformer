@@ -1,3 +1,4 @@
+import { ts as schemaGeneratorTs } from "ts-json-schema-generator";
 import * as ts from "typescript";
 import { IProject } from "../project.js";
 import { schemaToValidator } from "../transformer-utils";
@@ -17,7 +18,7 @@ export abstract class ValidateTransformer {
       );
     }
 
-    const schema = project.schemaGenerator.createSchemaFromNodes([node]);
+    const schema = project.schemaGenerator.createSchemaFromNodes([node as schemaGeneratorTs.Node]);
 
     return schemaToValidator(schema, project.options.validation);
   }

@@ -67,8 +67,8 @@
     "jest": "^29.7.0",
     "jest-html-reporters": "^3.1.5",
     "jest-junit": "^16.0.0",
-    "ts-patch": "^3.1.1",
-    "typescript": "^5.3.3"
+    "ts-patch": "^3.1.2",
+    "typescript": "^5.4.2"
   },
   "tsp": {
     "name": "ts-json-schema-transformer",

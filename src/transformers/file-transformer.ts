@@ -28,7 +28,6 @@ export abstract class FileTransformer {
       file.libReferenceDirectives,
     );
 
-    FileTransformer.FILE_NODE_MAP.delete(file.fileName);
     FileTransformer.IMPORT_MAP.delete(file.fileName);
     return updated;
   }

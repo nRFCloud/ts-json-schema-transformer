@@ -1,4 +1,5 @@
 import { createFormatter, createParser, SchemaGenerator } from "ts-json-schema-generator";
+import { ts as schemaGeneratorTs } from "ts-json-schema-generator";
 import * as ts from "typescript";
 import { AJV_DEFAULTS, AJVOptions, IOptions, IProject, SCHEMA_DEFAULTS, SchemaConfig } from "./project.js";
 import { FileTransformer } from "./transformers/file-transformer.js";
@@ -39,14 +40,19 @@ export default function transform(program: ts.Program, options: IOptions = {}): 
     allErrors: allErrors || AJV_DEFAULTS.allErrors,
   };
 
-  const nodeParser = createParser(program, {
+  const nodeParser = createParser(program as schemaGeneratorTs.Program, {
     ...schemaConfig,
   });
   const typeFormatter = createFormatter({
     ...schemaConfig,
   });
 
-  const schemaGenerator = new SchemaGenerator(program, nodeParser, typeFormatter, schemaConfig);
+  const schemaGenerator = new SchemaGenerator(
+    program as schemaGeneratorTs.Program,
+    nodeParser,
+    typeFormatter,
+    schemaConfig,
+  );
   const project: IProject = {
     checker: program.getTypeChecker(),
     options: {
@@ -54,7 +60,7 @@ export default function transform(program: ts.Program, options: IOptions = {}): 
       validation: validationConfig,
     },
     program,
-    nodeParser: createParser(program, schemaConfig),
+    nodeParser: createParser(program as schemaGeneratorTs.Program, schemaConfig),
     schemaGenerator,
     typeFormatter: createFormatter(schemaConfig),
   };

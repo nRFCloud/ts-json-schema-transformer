@@ -1,3 +1,4 @@
+import { ts as schemaGeneratorTs } from "ts-json-schema-generator";
 import * as ts from "typescript";
 import { IProject } from "../project.js";
 import { convertObjectToLiteralExpression, getGenericArg } from "./utils.js";
@@ -12,7 +13,7 @@ export abstract class GetSchemaTransformer {
       );
     }
 
-    const schema = project.schemaGenerator.createSchemaFromNodes([node]);
+    const schema = project.schemaGenerator.createSchemaFromNodes([node as schemaGeneratorTs.Node]);
     return convertObjectToLiteralExpression(schema as Record<string, unknown>);
   }
 }

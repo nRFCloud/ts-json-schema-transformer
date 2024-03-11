@@ -1,6 +1,7 @@
 import { JSONSchema7 } from "json-schema";
 
 const { JSONSchemaFaker: jsf } = require("json-schema-faker");
+import { ts as schemaGeneratorTs } from "ts-json-schema-generator";
 import * as ts from "typescript";
 import { IProject } from "../project.js";
 import { addFormatsJsf, convertValueToExpression, derefJSONSchemaRoot, getGenericArg } from "./utils.js";
@@ -17,7 +18,7 @@ export abstract class GetMockObjectTransformer {
       );
     }
 
-    const schema = derefJSONSchemaRoot(project.schemaGenerator.createSchemaFromNodes([node]));
+    const schema = derefJSONSchemaRoot(project.schemaGenerator.createSchemaFromNodes([node as schemaGeneratorTs.Node]));
 
     return convertValueToExpression(jsf.generate(schema as JSONSchema7));
   }

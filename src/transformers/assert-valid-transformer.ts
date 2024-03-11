@@ -1,3 +1,4 @@
+import { ts as schemaGeneratorTs } from "ts-json-schema-generator";
 import * as ts from "typescript";
 import { IProject } from "../project.js";
 import { schemaToValidator } from "../transformer-utils.js";
@@ -14,7 +15,7 @@ export abstract class AssertValidTransformer {
         `Error on getSchema: non-specified generic argument.`,
       );
     }
-    const schema = project.schemaGenerator.createSchemaFromNodes([node]);
+    const schema = project.schemaGenerator.createSchemaFromNodes([node as schemaGeneratorTs.Node]);
     const validatorCallExp = schemaToValidator(schema, project.options.validation);
     const validationAssertionIdentifier = FileTransformer.getOrCreateImport(
       expression.getSourceFile(),
