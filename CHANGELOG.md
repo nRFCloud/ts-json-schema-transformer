@@ -1,5 +1,11 @@
 # @nrfcloud/ts-json-schema-transformer
 
+## 1.4.0
+
+### Minor Changes
+
+- d00a70e: update typescript
+
 ## 1.3.0
 
 ### Minor Changes
