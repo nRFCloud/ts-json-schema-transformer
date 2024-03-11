@@ -168,7 +168,14 @@ export function convertValueToExpression(value: unknown): ts.Expression {
   if (typeof value === "string") {
     return ts.factory.createStringLiteral(value);
   } else if (typeof value === "number") {
-    return ts.factory.createNumericLiteral(value);
+    if (value < 0) {
+      return ts.factory.createPrefixUnaryExpression(
+        ts.SyntaxKind.MinusToken,
+        ts.factory.createNumericLiteral(Math.abs(value)),
+      );
+    } else {
+      return ts.factory.createNumericLiteral(value);
+    }
   } else if (typeof value === "boolean") {
     if (value) {
       return ts.factory.createTrue();
