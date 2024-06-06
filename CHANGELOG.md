@@ -1,5 +1,11 @@
 # @nrfcloud/ts-json-schema-transformer
 
+## 1.4.2
+
+### Patch Changes
+
+- 41ed7c6: Automatically add AJV errors to ValidationError.cause.
+
 ## 1.4.1
 
 ### Patch Changes
