@@ -8,7 +8,7 @@ on:
 
 env:
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-
+permissions: write-all
 jobs:
   slackNotification:
     if: false

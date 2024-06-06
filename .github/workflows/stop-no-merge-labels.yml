@@ -3,7 +3,7 @@ name: Block merging PRs with 'no-merge' label
 on:
   pull_request:
     types: [synchronize, opened, reopened, labeled, unlabeled]
-
+permissions: write-all
 jobs:
   no-merge:
     if: ${{ contains(github.event.*.labels.*.name, 'no-merge') }}

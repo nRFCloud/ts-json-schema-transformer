@@ -26,13 +26,20 @@ describe("Simple Assert Test", () => {
   });
 
   it("should throw ValidationError object", () => {
-    let err;
     try {
       assertValid<SimpleType>("2021-01-01T00:00:00Z");
-    } catch (error) {
-      err = error;
-    } finally {
-      expect(err).toBeInstanceOf(ValidationError);
+    } catch (e) {
+      const error = e as ValidationError;
+      expect(error).toBeInstanceOf(ValidationError);
+      expect(error.cause).toEqual([
+        {
+          instancePath: "",
+          schemaPath: "#/definitions/SimpleType/type",
+          keyword: "type",
+          params: { type: "object" },
+          message: "must be object",
+        },
+      ]);
     }
   });
 });
