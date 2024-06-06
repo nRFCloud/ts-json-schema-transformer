@@ -40,7 +40,9 @@ export class ValidationError extends Error {
  */
 export function validationAssertion(validator: ValidateFunction<unknown>, obj: unknown) {
   if (!validator(obj)) {
-    throw new ValidationError(`Validation error: ${validator.errors?.map(error => JSON.stringify(error)).join(", ")}`);
+    throw new ValidationError(`Validation error: ${validator.errors?.map(error => JSON.stringify(error)).join(", ")}`, {
+      cause: validator.errors,
+    });
   }
   return obj;
 }
