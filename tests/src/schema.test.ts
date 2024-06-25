@@ -1,5 +1,5 @@
 import { getSchema } from "../../dist";
-import { ISODateTime, ISOTime, SimpleType, TenantId, ULID, UnionType } from "./types";
+import { ByteType, ISODateTime, ISOTime, SimpleType, TenantId, ULID, UnionType } from "./types";
 
 describe("Schema", () => {
   describe("Simple Schemas", () => {
@@ -94,6 +94,21 @@ describe("Schema", () => {
           "ISOTime": {
             "type": "string",
             "format": "iso-time",
+          },
+        },
+      });
+    });
+
+    it("Should generate a byte schema", () => {
+      const schema = getSchema<ByteType>();
+
+      expect(schema).toEqual({
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "$ref": "#/definitions/ByteType",
+        "definitions": {
+          "ByteType": {
+            "type": "string",
+            "format": "byte",
           },
         },
       });

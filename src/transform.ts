@@ -1,7 +1,12 @@
-import { createFormatter, createParser, SchemaGenerator } from "ts-json-schema-generator";
-import { ts as schemaGeneratorTs } from "ts-json-schema-generator";
+import {
+  createFormatter,
+  createParser,
+  DEFAULT_CONFIG as TsJsonSchemaGeneratorDefaultConfig,
+  SchemaGenerator,
+  ts as schemaGeneratorTs,
+} from "ts-json-schema-generator";
 import * as ts from "typescript";
-import { AJV_DEFAULTS, AJVOptions, IOptions, IProject, SCHEMA_DEFAULTS, SchemaConfig } from "./project.js";
+import { AJV_DEFAULTS, IOptions, IProject, SCHEMA_DEFAULTS } from "./project.js";
 import { FileTransformer } from "./transformers/file-transformer.js";
 
 export default function transform(program: ts.Program, options: IOptions = {}): ts.TransformerFactory<ts.SourceFile> {
@@ -20,20 +25,21 @@ export default function transform(program: ts.Program, options: IOptions = {}): 
     expose,
   } = options ?? {};
 
-  const schemaConfig: SchemaConfig = {
+  const schemaConfig = {
+    ...TsJsonSchemaGeneratorDefaultConfig,
     ...SCHEMA_DEFAULTS,
     jsDoc: jsDoc || SCHEMA_DEFAULTS.jsDoc,
     strictTuples: strictTuples || SCHEMA_DEFAULTS.strictTuples,
     encodeRefs: encodeRefs || SCHEMA_DEFAULTS.encodeRefs,
     additionalProperties: additionalProperties || SCHEMA_DEFAULTS.additionalProperties,
     sortProps: sortProps || SCHEMA_DEFAULTS.sortProps,
-    expose,
+    expose: expose || SCHEMA_DEFAULTS.expose,
   };
 
-  const validationConfig: AJVOptions = {
+  const validationConfig = {
     ...AJV_DEFAULTS,
     loopRequired: loopRequired || AJV_DEFAULTS.loopRequired,
-    loopEnum: loopEnum || AJV_DEFAULTS.loopEnum,
+    loopEnum,
     removeAdditional: removeAdditional || AJV_DEFAULTS.removeAdditional,
     coerceTypes: coerceTypes || AJV_DEFAULTS.coerceTypes,
     useDefaults: useDefaults || AJV_DEFAULTS.useDefaults,

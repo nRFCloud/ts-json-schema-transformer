@@ -23,21 +23,21 @@ export type SchemaConfig = Pick<
   "sortProps" | "expose" | "jsDoc" | "strictTuples" | "encodeRefs" | "additionalProperties"
 >;
 
-export const AJV_DEFAULTS: AJVOptions = {
+export const AJV_DEFAULTS = {
   useDefaults: true,
   coerceTypes: false,
   loopRequired: 20,
   allErrors: true,
   removeAdditional: false,
-};
+} as const satisfies Options;
 
-export const SCHEMA_DEFAULTS: SchemaConfig = {
+export const SCHEMA_DEFAULTS = {
   expose: "export",
   jsDoc: "extended",
   sortProps: true,
   strictTuples: false,
   encodeRefs: true,
   additionalProperties: false,
-};
+} as const satisfies Config;
 
 export type IOptions = AJVOptions & SchemaConfig;

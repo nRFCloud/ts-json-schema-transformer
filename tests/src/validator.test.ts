@@ -1,5 +1,5 @@
 import { getValidator } from "../../dist";
-import { ISODateTime, ISOTime, SimpleType } from "./types";
+import { ByteType, ISODateTime, ISOTime, SimpleType } from "./types";
 
 export interface InputEvent {
   foo: TenantId;
@@ -60,11 +60,17 @@ describe("Validator", () => {
     const validator = getValidator<InputEvent>();
 
     it("should validate schema", () => {
-      expect(validator({ foo: "2021-01-01T00:00:00Z", other: 50 })).toBeTruthy();
+      expect(validator({
+        foo: "2021-01-01T00:00:00Z",
+        other: 50,
+      })).toBeTruthy();
     });
 
     it("should not validate schema", () => {
-      expect(validator({ foo: "2021-01-01", other: 150 })).toBeFalsy();
+      expect(validator({
+        foo: "2021-01-01",
+        other: 150,
+      })).toBeFalsy();
 
       expect(validator.errors).toEqual([
         {
@@ -109,6 +115,13 @@ describe("Validator", () => {
 
     it("should not validate iso_time", () => {
       expect(isoTimeValidator("2021-01-01")).toBeFalsy();
+    });
+
+    it("Should validate a byte schema", () => {
+      const byteValidator = getValidator<ByteType>();
+
+      expect(byteValidator("aGVsbG8gd29ybGQ=")).toBeTruthy();
+      expect(byteValidator("aGVsbG8gd29ybGQ")).toBeFalsy();
     });
   });
 

@@ -71,6 +71,9 @@ export type DeviceTag = Nominal<string, "DeviceTag">;
  */
 export type DeviceSubType = Nominal<string, "DeviceSubType">;
 
+/** @format byte */
+export type ByteType = string;
+
 export const ServiceProcessStatuses = {
   PENDING: "PENDING",
   IN_PROGRESS: "IN_PROGRESS",
