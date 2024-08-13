@@ -1,5 +1,13 @@
 # @nrfcloud/ts-json-schema-transformer
 
+## 2.0.0
+
+### Major Changes
+
+- 763d69e: Update TS to 5.5
+
+  BREAKING: TS 5.5 is now required
+
 ## 1.4.2
 
 ### Patch Changes
