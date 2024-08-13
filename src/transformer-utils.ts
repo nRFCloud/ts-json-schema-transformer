@@ -43,12 +43,12 @@ export function schemaToValidator(schema: JSONSchema7, options?: AJVOptions) {
   const wrappedValidator = bundleValidator.replace(/export\s*?{\s*?(\S+?) as default\s*?};/g, "return $1;");
   const sourceFile = ts.createSourceFile(randomUUID(), wrappedValidator, ts.ScriptTarget.ES5, true);
 
+  markSynthesized(sourceFile);
+
   const bodyExpression = ts.factory.createBlock(
     sourceFile.statements,
     false,
   );
-
-  stripRanges(bodyExpression);
 
   const functionExpression = ts.factory.createArrowFunction(
     undefined,
@@ -68,12 +68,12 @@ export function schemaToValidator(schema: JSONSchema7, options?: AJVOptions) {
 }
 
 /**
- * Strip all ranges from a node and its children.
- * This is a nasty hack to get around the fact that we're creating nodes from a source file that doesn't exist.
+ * Strip all ranges from a node and its children as well as marking them as synthesized.
  */
-function stripRanges(node: ts.Node) {
+function markSynthesized(node: ts.Node) {
   (node as { pos: number }).pos = -1;
   (node as { end: number }).end = -1;
+  (node as { flags: number }).flags = node.flags | ts.NodeFlags.Synthesized;
 
-  ts.forEachChild(node, stripRanges);
+  ts.forEachChild(node, markSynthesized);
 }
