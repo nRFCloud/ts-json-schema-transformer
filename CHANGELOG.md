@@ -1,5 +1,11 @@
 # @nrfcloud/ts-json-schema-transformer
 
+## 2.0.1
+
+### Patch Changes
+
+- 5f2341c: disable ajv strict
+
 ## 2.0.0
 
 ### Major Changes
