@@ -17,6 +17,7 @@ export function schemaToValidator(schema: JSONSchema7, options?: AJVOptions) {
       lines: true,
     },
     strictTypes: false,
+    strict: false,
   });
   addFormatsAjv(ajv);
 
