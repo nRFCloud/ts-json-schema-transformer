@@ -29,6 +29,7 @@ export const AJV_DEFAULTS = {
   loopRequired: 20,
   allErrors: true,
   removeAdditional: false,
+  strict: false,
 } as const satisfies Options;
 
 export const SCHEMA_DEFAULTS = {
