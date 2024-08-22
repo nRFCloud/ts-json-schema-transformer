@@ -5,7 +5,8 @@
     "rootDir": "src",
     "plugins": [
       {
-        "transform": "../dist/transform.js"
+        "transform": "../dist/transform.js",
+        "seed": false,
       }
     ],
     "types": [

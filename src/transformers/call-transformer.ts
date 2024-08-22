@@ -30,4 +30,5 @@ const METHOD_DECORATOR_PROCESSORS: Record<string, Task> = {
   "getValidator": ValidateTransformer.transform,
   "getMockObject": GetMockObjectTransformer.transform,
   "assertValid": AssertValidTransformer.transform,
+  "assert": AssertValidTransformer.transform,
 };

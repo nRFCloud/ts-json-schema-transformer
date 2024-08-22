@@ -45,20 +45,20 @@ export function hasTransformMarker(node: ts.Node): boolean {
   return jsdoc.some((tag) => tag.tagName.getText() === "transformer" && tag.comment === "ts-json-schema-transformer");
 }
 
-export function getGenericArg(project: IProject, expression: ts.CallExpression): [ts.Type, ts.Node, boolean] {
+export function getGenericArg(project: IProject, expression: ts.CallExpression, idx = 0): [ts.Type, ts.Node, boolean] {
   return expression.typeArguments && expression.typeArguments[0]
     ? [
       project.checker.getTypeFromTypeNode(
-        expression.typeArguments[0],
+        expression.typeArguments[idx],
       ),
-      expression.typeArguments[0],
+      expression.typeArguments[idx],
       true,
     ]
     : [
       project.checker.getTypeAtLocation(
-        expression.arguments[0]!,
+        expression.arguments[idx]!,
       ),
-      expression.arguments[0]!,
+      expression.arguments[idx]!,
       false,
     ];
 }
