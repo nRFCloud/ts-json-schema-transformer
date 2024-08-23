@@ -1,6 +1,6 @@
 import { createFormatter, createParser, SchemaGenerator, ts as schemaGeneratorTs } from "ts-json-schema-generator";
 import * as ts from "typescript";
-import { AJV_DEFAULTS, IOptions, IProject, SCHEMA_DEFAULTS } from "./project.js";
+import { AJV_DEFAULTS, DEFAULT_SEED, IOptions, IProject, SCHEMA_DEFAULTS } from "./project.js";
 import { FileTransformer } from "./transformers/file-transformer.js";
 
 export default function transform(program: ts.Program, options: IOptions = {}): ts.TransformerFactory<ts.SourceFile> {
@@ -16,6 +16,7 @@ export default function transform(program: ts.Program, options: IOptions = {}): 
     allErrors,
     sortProps,
     expose,
+    seed,
   } = options ?? {};
 
   const schemaConfig = {
@@ -53,6 +54,9 @@ export default function transform(program: ts.Program, options: IOptions = {}): 
   const project: IProject = {
     checker: program.getTypeChecker(),
     options: {
+      mock: {
+        seed: seed ?? DEFAULT_SEED,
+      },
       schema: schemaConfig,
       validation: validationConfig,
     },

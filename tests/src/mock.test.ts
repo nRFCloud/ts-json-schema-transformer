@@ -1,5 +1,14 @@
 import { getMockObject, getValidator } from "@nrfcloud/ts-json-schema-transformer";
-import { ISODateTime, ISOTime, ServiceProcessStatus, SimpleType, TenantId, ULID, UnionType } from "./types";
+import {
+  ComplexType,
+  ISODateTime,
+  ISOTime,
+  ServiceProcessStatus,
+  SimpleType,
+  TenantId,
+  ULID,
+  UnionType,
+} from "./types";
 
 describe("Mock Objects", () => {
   describe("Simple Mocks", () => {
@@ -63,6 +72,22 @@ describe("Mock Objects", () => {
       const validator = getValidator<TenantId>();
 
       expect(validator(mock)).toBeTruthy();
+    });
+  });
+
+  describe("Seeds", () => {
+    it("should generate two different objects with no seed", () => {
+      const test1 = getMockObject<ComplexType>();
+      const test2 = getMockObject<ComplexType>();
+
+      expect(test1).not.toMatchObject(test2);
+    });
+
+    it("should generate two identical object with a seed", () => {
+      const test1 = getMockObject<ComplexType, "coolseed">();
+      const test2 = getMockObject<ComplexType, "coolseed">();
+
+      expect(test1).toMatchObject(test2);
     });
   });
 });

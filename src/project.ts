@@ -7,6 +7,9 @@ export interface IProject {
   options: {
     schema: SchemaConfig;
     validation: AJVOptions;
+    mock: {
+      seed: string | false;
+    };
   };
   checker: ts.TypeChecker;
   schemaGenerator: SchemaGenerator;
@@ -22,6 +25,8 @@ export type SchemaConfig = Pick<
   Config,
   "sortProps" | "expose" | "jsDoc" | "strictTuples" | "encodeRefs" | "additionalProperties"
 >;
+
+export const DEFAULT_SEED = "emerson";
 
 export const AJV_DEFAULTS = {
   useDefaults: true,
@@ -48,4 +53,6 @@ export const SCHEMA_DEFAULTS = {
   functions: "fail",
 } as const satisfies Config;
 
-export type IOptions = AJVOptions & SchemaConfig;
+export type IOptions = AJVOptions & SchemaConfig & {
+  seed?: string | false;
+};

@@ -1,4 +1,4 @@
-import { assertValid, ValidationError } from "@nrfcloud/ts-json-schema-transformer";
+import { assert, assertValid, ValidationError } from "@nrfcloud/ts-json-schema-transformer";
 import { ServiceURL, SimpleType } from "./types";
 
 describe("Simple Assert Test", () => {
@@ -41,5 +41,11 @@ describe("Simple Assert Test", () => {
         },
       ]);
     }
+  });
+
+  it("Should assert and return object", () => {
+    const test = { foo: "bar" };
+    const result = assert<SimpleType>(test);
+    expect(test).toMatchObject(result);
   });
 });

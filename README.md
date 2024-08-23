@@ -141,14 +141,19 @@ Generates an AJV validator function for the given type.
 The generic type parameter is the type you want to generate a validator for, and the single input to the function.
 This function call is replaced by the generated validator at compile time.
 
-#### `getMockObject<T>(): T`
+#### `getMockObject<T, Seed>(): T`
 
 Generate a mock object for the given type.
 Should support all formats as well as other constraints.
+You can optionally specify a seed for the random number generator as the second parameter.
 
 #### `assertValid<T>(obj: unknown): asserts obj is T`
 
 Validates that a given object satisfies the constraints defined in the given generic type parameter's schema. The method will throw an error if validation fails. This function call is replaced a wrapped validator method at compile time.
+
+#### `assert<T>(obj: unknown): T`
+
+Very similar to `assertValid` but returns the passed object instead of narrowing the type.
 
 ### JSDoc Tags
 
@@ -394,6 +399,10 @@ Note that not all options are exposed, though more could be added in the future.
         
         // Whether properties should be sorted (stable)
         "sortProps": true,
+        
+        // Explicitly set the seed used for mock data generation.
+        // You can disable seeding by setting this false
+        "seed": "this is a seed"
       }
     ]
   }
