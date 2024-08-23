@@ -1,5 +1,11 @@
 # @nrfcloud/ts-json-schema-transformer
 
+## 2.1.0
+
+### Minor Changes
+
+- 076fec7: seeded mock
+
 ## 2.0.1
 
 ### Patch Changes
