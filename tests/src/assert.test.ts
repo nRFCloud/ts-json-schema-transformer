@@ -136,4 +136,10 @@ describe("Simple Assert Test", () => {
       expect(result).toMatchObject({ foo: "bar" });
     });
   });
+
+  it("Should assert and return object", () => {
+    const test = { foo: "bar" };
+    const result = assert<SimpleType>(test);
+    expect(test).toMatchObject(result);
+  });
 });
