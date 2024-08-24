@@ -16,6 +16,9 @@
     "paths": {
       "@nrfcloud/ts-json-schema-transformer": [
         "../dist"
+      ],
+      "@nrfcloud/ts-json-schema-transformer/jsf": [
+          "../dist/json-schema-faker-proxy"
       ]
     }
   },

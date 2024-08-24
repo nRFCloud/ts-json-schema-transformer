@@ -1,4 +1,4 @@
-import { getValidator } from "../../dist";
+import { createValidateFn, validate } from "../../dist";
 import { ISODateTime, ISOTime, SimpleType } from "./types";
 
 export interface InputEvent {
@@ -24,7 +24,7 @@ export type TenantId = string;
 
 describe("Validator", () => {
   describe("Simple Schema", () => {
-    const validator = getValidator<SimpleType>();
+    const validator = createValidateFn<SimpleType>();
 
     it("should validate a simple schema", () => {
       expect(validator({ foo: "bar" })).toBeTruthy();
@@ -57,7 +57,7 @@ describe("Validator", () => {
   });
 
   describe("Should validate schema with type alias", () => {
-    const validator = getValidator<InputEvent>();
+    const validator = createValidateFn<InputEvent>();
 
     it("should validate schema", () => {
       expect(validator({ foo: "2021-01-01T00:00:00Z", other: 50 })).toBeTruthy();
@@ -91,7 +91,7 @@ describe("Validator", () => {
   });
 
   describe("Should validate formats", () => {
-    const isoDateTimeValidator = getValidator<ISODateTime>();
+    const isoDateTimeValidator = createValidateFn<ISODateTime>();
 
     it("should validate iso-date-time", () => {
       expect(isoDateTimeValidator("2021-01-01T00:00:00Z")).toBeTruthy();
@@ -101,7 +101,7 @@ describe("Validator", () => {
       expect(isoDateTimeValidator("2021-01-01")).toBeFalsy();
     });
 
-    const isoTimeValidator = getValidator<ISOTime>();
+    const isoTimeValidator = createValidateFn<ISOTime>();
 
     it("should validate iso_time", () => {
       expect(isoTimeValidator("00:00:00Z")).toBeTruthy();
@@ -113,7 +113,7 @@ describe("Validator", () => {
   });
 
   describe("Should validate string length", () => {
-    const validator = getValidator<ShortString>();
+    const validator = createValidateFn<ShortString>();
 
     it("should validate string length", () => {
       expect(validator("a")).toBeTruthy();
@@ -123,5 +123,16 @@ describe("Validator", () => {
       expect(validator("aaaaaaaaaaaaaaaaaaaa")).toBeFalsy();
     });
   });
-  // TODO: more tests
+
+  describe("Should validate inline", () => {
+    it("should validate inline", () => {
+      const isValid = validate<SimpleType>({ "foo": "bar" });
+      expect(isValid).toBeTruthy();
+    });
+
+    it("should invalidate inline", () => {
+      const isValid = validate<SimpleType>({ test: true });
+      expect(isValid).toBeFalsy;
+    });
+  });
 });

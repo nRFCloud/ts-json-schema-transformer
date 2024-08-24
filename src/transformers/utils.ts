@@ -37,6 +37,7 @@ import {
   uuid,
 } from "../formats";
 import { IProject } from "../project.js";
+import { FileTransformer } from "./file-transformer";
 
 const { JSONSchemaFaker: jsf } = require("json-schema-faker");
 
@@ -69,6 +70,15 @@ export function getTmpDir() {
     mkdirSync(dir, { recursive: true });
   }
   return dir;
+}
+
+export function wrapCall(call: ts.CallExpression) {
+  const wrapFn = FileTransformer.getOrCreateImport(
+    call.getSourceFile(),
+    "@nrfcloud/ts-json-schema-transformer",
+    "parser",
+  );
+  return ts.factory.createCallExpression(wrapFn, undefined, [call]);
 }
 
 export function bundleSource(source: string, options: BuildOptions): string {

@@ -61,7 +61,7 @@ pnpm add -D ttypescript
 ### General Usage
 
 ```typescript
-import { getSchema, getValidator } from "@nrfcloud/ts-json-schema-transformer";
+import { getSchema, createValidateFn } from "@nrfcloud/ts-json-schema-transformer";
 import { getMockObject } from "./index";
 
 export interface InputEvent {
@@ -101,7 +101,7 @@ type union = Type1 | Type2;
 const schema = getSchema<InputEvent>();
 
 // Generate an AJV validator function
-const validator = getValidator<InputEvent>();
+const validator = createValidateFn<InputEvent>();
 
 // Run the validator
 validator({});
@@ -135,25 +135,55 @@ Generates a JSON schema for the given type.
 The generic type parameter is the type you want to generate a schema for, and the single input to the function.
 This function call is replaced by the generated schema at compile time.
 
-#### `getValidator<T>(): ValidateFunction<T>`
+#### `validate<T>(obj: unknown): obj is T`
+
+Validates an object against the schema for the given type.
+
+#### `createValidateFn<T>(): ValidateFunction<T>`
 
 Generates an AJV validator function for the given type.
 The generic type parameter is the type you want to generate a validator for, and the single input to the function.
 This function call is replaced by the generated validator at compile time.
 
-#### `getMockObject<T, Seed>(): T`
+#### `mock<T, Seed>(): T`
 
 Generate a mock object for the given type.
 Should support all formats as well as other constraints.
 You can optionally specify a seed for the random number generator as the second parameter.
 
-#### `assertValid<T>(obj: unknown): asserts obj is T`
+#### `assertGuard<T>(obj: unknown): asserts obj is T`
 
 Validates that a given object satisfies the constraints defined in the given generic type parameter's schema. The method will throw an error if validation fails. This function call is replaced a wrapped validator method at compile time.
 
+#### `createAssertGuardFn<T>(): (obj: unknown) => asserts obj is T`
+
+Generates a reusable assertGuard function for the given type. The function returned by this method can be called with an object to validate it against the schema for the given type. The function will throw an error if validation fails.
+
 #### `assert<T>(obj: unknown): T`
 
-Very similar to `assertValid` but returns the passed object instead of narrowing the type.
+Very similar to `assertGuard` but returns the passed object instead of narrowing the type.
+
+#### `createAssertFn<T>(): (obj: unknown) => T`
+
+Generates a reusable assert function for the given type. The function returned by this method can be called with an object to validate it against the schema for the given type. The function will throw an error if validation fails.
+
+#### `parse<T>(input: string): T`
+
+Parses a JSON string into the given type.
+Returns the parsed object if successful, otherwise undefined.
+
+#### `assertParse<T>(input: string): T`
+
+Parses a JSON string into the given type.
+Throws an error if the input is invalid.
+
+#### `createParseFn<T>(): (input: string) => T`
+
+Generates a reusable parse function for the given type.
+
+#### `createAssertParseFn<T>(): (input: string) => T`
+
+Generates a reusable assertParse function for the given type.
 
 ### JSDoc Tags
 
@@ -426,9 +456,9 @@ Simply call `getSchema` and run the output through `JSON.stringify` and save it 
 The validator function returns a boolean, and sets the `errors` property on the function to an array of errors.
 [AJV Docs](https://ajv.js.org/api.html#validation-errors)
 
-#### assertValid versus getValidator?
+#### assertValid versus createValidateFn?
 
-The key difference here from a function-standpoint is that `assertValid` is a method that will throw an error upon validation failure, and the `getValidator` method returns an AJV validator. By using `getValidator`, you can utilize and access all of the AJV validator's properties (e.g. errors, schema, etc), which may be useful for some usecases.
+The key difference here from a function-standpoint is that `assertValid` is a method that will throw an error upon validation failure, and the `createValidateFn` method returns an AJV validator. By using `createValidateFn`, you can utilize and access all of the AJV validator's properties (e.g. errors, schema, etc), which may be useful for some usecases.
 
 Frequent usage of `assertValid` may contribute to a spike in filesize in the transpiled file, this is more apparent for larger schemas.
 
