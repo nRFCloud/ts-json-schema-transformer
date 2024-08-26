@@ -1,6 +1,6 @@
 {
   "name": "@nrfcloud/ts-json-schema-transformer",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "A TypeScript transformer that generates JSON schemas and validators from TypeScript interfaces",
   "type": "commonjs",
   "main": "dist/index.js",
@@ -31,8 +31,8 @@
       "require": "./dist/transform.js"
     },
     "./dist/jsf": {
-        "types": "./dist/json-schema-faker-proxy.d.ts",
-        "require": "./dist/json-schema-faker-proxy.js"
+      "types": "./dist/json-schema-faker-proxy.d.ts",
+      "require": "./dist/json-schema-faker-proxy.js"
     },
     "./transform": {
       "types": "./dist/transform.d.ts",
