@@ -5,7 +5,7 @@ import { schemaToValidator } from "../transformer-utils.js";
 import { FileTransformer } from "./file-transformer.js";
 import { getGenericArg } from "./utils.js";
 
-export abstract class ValidateTransformer {
+export abstract class AssertTransformer {
   private static createValidator(project: IProject, expression: ts.CallExpression): ts.Expression {
     // Get the type info
     const [type, node] = getGenericArg(project, expression);
@@ -19,7 +19,7 @@ export abstract class ValidateTransformer {
     return schemaToValidator(schema, project.options.validation);
   }
 
-  public static transform(project: IProject, expression: ts.CallExpression): ts.Node {
+  public static transform(project: IProject, expression: ts.CallExpression, shouldReturn = false): ts.Node {
     const validatorCallExp = this.createValidator(project, expression);
     const validationAssertionIdentifier = FileTransformer.getOrCreateImport(
       expression.getSourceFile(),
@@ -28,15 +28,20 @@ export abstract class ValidateTransformer {
     );
     return ts.factory.createCallExpression(validationAssertionIdentifier, undefined, [
       validatorCallExp,
-      ts.factory.createFalse(),
-      ts.factory.createStringLiteral("object"),
+      ts.factory.createTrue(),
+      shouldReturn ? ts.factory.createStringLiteral("object") : ts.factory.createStringLiteral("none"),
       expression.arguments[0],
     ]);
+  }
+
+  public static transformWithReturn(project: IProject, expression: ts.CallExpression): ts.Node {
+    return this.transform(project, expression, true);
   }
 
   public static transformCreateFn(
     project: IProject,
     expression: ts.CallExpression,
+    shouldReturn = false,
   ): ts.Node {
     const validatorCallExp = this.createValidator(project, expression);
     const validationAssertionIdentifier = FileTransformer.getOrCreateImport(
@@ -53,9 +58,13 @@ export abstract class ValidateTransformer {
       [
         validationAssertionIdentifier,
         validatorCallExp,
-        ts.factory.createFalse(),
-        ts.factory.createStringLiteral("object"),
+        ts.factory.createTrue(),
+        shouldReturn ? ts.factory.createStringLiteral("object") : ts.factory.createStringLiteral("none"),
       ],
     );
+  }
+
+  public static transformCreateFnWithReturn(project: IProject, expression: ts.CallExpression): ts.Node {
+    return this.transformCreateFn(project, expression, true);
   }
 }

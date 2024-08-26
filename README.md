@@ -9,6 +9,8 @@ It uses [ts-json-schema-generator](https://github.com/vega/ts-json-schema-genera
 [ajv](https://github.com/ajv-validator/ajv) to generate validator functions. Functions and schema are generated inline
 at compile time using a custom typescript transformer.
 
+You can also generate mock objects (using [json-schema-faker](https://github.com/json-schema-faker/json-schema-faker)) and safely parse JSON strings into the given types.
+
 ## Installation
 
 #### Requirements
@@ -61,7 +63,7 @@ pnpm add -D ttypescript
 ### General Usage
 
 ```typescript
-import { getSchema, getValidator } from "@nrfcloud/ts-json-schema-transformer";
+import { getSchema, createValidateFn } from "@nrfcloud/ts-json-schema-transformer";
 import { getMockObject } from "./index";
 
 export interface InputEvent {
@@ -101,7 +103,7 @@ type union = Type1 | Type2;
 const schema = getSchema<InputEvent>();
 
 // Generate an AJV validator function
-const validator = getValidator<InputEvent>();
+const validator = createValidateFn<InputEvent>();
 
 // Run the validator
 validator({});
@@ -135,25 +137,70 @@ Generates a JSON schema for the given type.
 The generic type parameter is the type you want to generate a schema for, and the single input to the function.
 This function call is replaced by the generated schema at compile time.
 
-#### `getValidator<T>(): ValidateFunction<T>`
+#### `validate<T>(obj: unknown): T | undefined`
+
+Validates an object against the schema for the given type
+Returns either the validated object or undefined if validation fails.
+
+#### `createValidateFn<T>(): (obj: unknown) => T | undefined`
+
+Creates a validator function for the given type.
+Returns either the validated object or undefined if validation fails.
+
+#### `guard<T>(obj: unknown): obj is T`
+
+Validates an object against the schema for the given type.
+Returns a boolean indicating whether the object is valid, acting as a type guard.
+
+#### `createGuardFn<T>(): ValidateFunction<T>`
 
 Generates an AJV validator function for the given type.
 The generic type parameter is the type you want to generate a validator for, and the single input to the function.
 This function call is replaced by the generated validator at compile time.
 
-#### `getMockObject<T, Seed>(): T`
+#### `mock<T, Seed>(): T`
 
 Generate a mock object for the given type.
 Should support all formats as well as other constraints.
 You can optionally specify a seed for the random number generator as the second parameter.
 
-#### `assertValid<T>(obj: unknown): asserts obj is T`
+#### `createMockFn<T, Seed>(): () => T`
+
+Generates a reusable mock function for the given type.
+
+#### `assertGuard<T>(obj: unknown): asserts obj is T`
 
 Validates that a given object satisfies the constraints defined in the given generic type parameter's schema. The method will throw an error if validation fails. This function call is replaced a wrapped validator method at compile time.
 
+#### `createAssertGuardFn<T>(): (obj: unknown) => asserts obj is T`
+
+Generates a reusable assertGuard function for the given type. The function returned by this method can be called with an object to validate it against the schema for the given type. The function will throw an error if validation fails.
+
 #### `assert<T>(obj: unknown): T`
 
-Very similar to `assertValid` but returns the passed object instead of narrowing the type.
+Very similar to `assertGuard` but returns the passed object instead of narrowing the type.
+
+#### `createAssertFn<T>(): (obj: unknown) => T`
+
+Generates a reusable assert function for the given type. The function returned by this method can be called with an object to validate it against the schema for the given type. The function will throw an error if validation fails.
+
+#### `parse<T>(input: string): T`
+
+Parses a JSON string into the given type.
+Returns the parsed object if successful, otherwise undefined.
+
+#### `assertParse<T>(input: string): T`
+
+Parses a JSON string into the given type.
+Throws an error if the input is invalid.
+
+#### `createParseFn<T>(): (input: string) => T`
+
+Generates a reusable parse function for the given type.
+
+#### `createAssertParseFn<T>(): (input: string) => T`
+
+Generates a reusable assertParse function for the given type.
 
 ### JSDoc Tags
 
@@ -426,11 +473,57 @@ Simply call `getSchema` and run the output through `JSON.stringify` and save it 
 The validator function returns a boolean, and sets the `errors` property on the function to an array of errors.
 [AJV Docs](https://ajv.js.org/api.html#validation-errors)
 
-#### assertValid versus getValidator?
+#### Why would I use `create<Method>Fn` instead of the normal method?
 
-The key difference here from a function-standpoint is that `assertValid` is a method that will throw an error upon validation failure, and the `getValidator` method returns an AJV validator. By using `getValidator`, you can utilize and access all of the AJV validator's properties (e.g. errors, schema, etc), which may be useful for some usecases.
+Large schemas can generate a substantial amount of code, so creating a reusable function can help reduce the size of the generated code.
+This can be important in cases where the size of the final bundle is a concern.
 
-Frequent usage of `assertValid` may contribute to a spike in filesize in the transpiled file, this is more apparent for larger schemas.
+#### How does this compare to similar libraries such as `typia`?
+
+The big difference between this library and `typia` is that it uses AJV and other off the shelf libraries (ts-json-schema-generator in particular) to generate schemas and code.
+This means that the individual components can have separate maintainers with a wider base of support (along with a wider support and feature set).
+
+For our specific use case, `typia` lacks support for type aliases and, consequently, nominal types.
+
+For example, we use something like the following to define safe nominal types:
+```typescript
+export declare class Tagged<N extends string> {
+    protected _nominal_: N;
+}
+
+// The extra parameter "E" is for creating basic inheritance 
+export type Nominal<T, N extends string, E extends T & Tagged<string> = T & Tagged<N>> = (T & Tagged<N>) | E;
+
+// 0..255 regex is [0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]
+// 0..31 regex is [0-9]|[12][0-9]|3[012]
+// CIDR v4 is [0..255].[0..255].[0..255].[0..255]/[0..32]
+/**
+ * @pattern ^([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3}/([0-9]|[12][0-9]|3[012])$
+ * @minLength 12
+ * @maxLength 21
+ * @example "86.255.0.199/24"
+ */
+export type CidrV4 = Nominal<string, "CidrV4">;
+```
+
+We can then use this type to validate the input to functions:
+```typescript
+function checkIpInCidrBlock(ip: IPv4, cidr: CidrV4): boolean {
+  ...
+}
+
+const testCidr = "192.168.1.0/24"
+
+// This will fail since the string type is too broad
+checkIpInCidrBlock(testCidr)
+
+// This narrows the string type to the nominal one
+assertGuard<CidrV4>(testCidr)
+
+checkIpInCidrBlock(testCidr);
+```
+
+Typia is a fantastic library and was a big inspiration for this project.
 
 ### Contributing
 
@@ -439,5 +532,6 @@ Contributions are welcome!
 Please follow the guidelines:
 
 - Use conventional style commit messages
+- Submit a changeset with your PR `pnpm changeset`
 - Don't introduce any new runtime dependencies either through the index file or generated code
 - Run lint and fix before committing

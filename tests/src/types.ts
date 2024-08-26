@@ -80,3 +80,15 @@ export const ServiceProcessStatuses = {
 export type ServiceProcessStatus = UnionValues<typeof ServiceProcessStatuses>;
 
 export type UnionValues<T> = T[keyof T];
+
+export interface Endpoint {
+  protocol: "http" | "https";
+  /**
+   * @format hostname
+   */
+  hostname: string;
+  /**
+   * @format uri-template
+   */
+  pathname: string;
+}
