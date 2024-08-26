@@ -24,7 +24,7 @@ export abstract class ParseTransformer {
     const parserIdentifier = FileTransformer.getOrCreateImport(
       expression.getSourceFile(),
       "@nrfcloud/ts-json-schema-transformer",
-      "parser",
+      "__parser",
     );
 
     return ts.factory.createCallExpression(parserIdentifier, undefined, [
@@ -43,7 +43,7 @@ export abstract class ParseTransformer {
     const parserIdentifier = FileTransformer.getOrCreateImport(
       expression.getSourceFile(),
       "@nrfcloud/ts-json-schema-transformer",
-      "parser",
+      "__parser",
     );
 
     return ts.factory.createCallExpression(

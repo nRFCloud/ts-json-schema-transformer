@@ -1,4 +1,4 @@
-import { createMockFn, createValidateFn, getMockObject } from "@nrfcloud/ts-json-schema-transformer";
+import { createGuardFn, createMockFn, getMockObject } from "@nrfcloud/ts-json-schema-transformer";
 import {
   ComplexType,
   ISODateTime,
@@ -14,14 +14,14 @@ describe("Mock Objects", () => {
   describe("Simple Mocks", () => {
     it("should generate a simple mock", () => {
       const mock = getMockObject<SimpleType>();
-      const validator = createValidateFn<SimpleType>();
+      const validator = createGuardFn<SimpleType>();
 
       expect(validator(mock)).toBeTruthy();
     });
 
     it("should generate a schema from a nominal type", () => {
       const mock = getMockObject<TenantId>();
-      const validator = createValidateFn<TenantId>();
+      const validator = createGuardFn<TenantId>();
 
       expect(validator(mock)).toBeTruthy();
     });
@@ -30,14 +30,14 @@ describe("Mock Objects", () => {
   describe("Complex Schemas", () => {
     it("should generate a complex schema", () => {
       const mock = getMockObject<UnionType>();
-      const validator = createValidateFn<UnionType>();
+      const validator = createGuardFn<UnionType>();
 
       expect(validator(mock)).toBeTruthy();
     });
 
     it("Should from a type the includes an encoded reference", () => {
       const mock = getMockObject<ServiceProcessStatus>();
-      const validator = createValidateFn<ServiceProcessStatus>();
+      const validator = createGuardFn<ServiceProcessStatus>();
 
       expect(validator(mock)).toBeTruthy();
     });
@@ -46,14 +46,14 @@ describe("Mock Objects", () => {
   describe("Formats", () => {
     it("should generate an iso date time schema", () => {
       const mock = getMockObject<ISODateTime>();
-      const validator = createValidateFn<ISODateTime>();
+      const validator = createGuardFn<ISODateTime>();
 
       expect(validator(mock)).toBeTruthy();
     });
 
     it("should generate an iso time schema", () => {
       const mock = getMockObject<ISOTime>();
-      const validator = createValidateFn<ISOTime>();
+      const validator = createGuardFn<ISOTime>();
 
       expect(validator(mock)).toBeTruthy();
     });
@@ -62,14 +62,14 @@ describe("Mock Objects", () => {
   describe("Patterns", () => {
     it("should generate a ULID", () => {
       const mock = getMockObject<ULID>();
-      const validator = createValidateFn<ULID>();
+      const validator = createGuardFn<ULID>();
 
       expect(validator(mock)).toBeTruthy();
     });
 
     it("should generate a UUID", () => {
       const mock = getMockObject<TenantId>();
-      const validator = createValidateFn<TenantId>();
+      const validator = createGuardFn<TenantId>();
 
       expect(validator(mock)).toBeTruthy();
     });
@@ -95,7 +95,7 @@ describe("Mock Objects", () => {
     it("should generate a simple mock", () => {
       const fn = createMockFn<SimpleType>();
       const mock = fn();
-      const validator = createValidateFn<SimpleType>();
+      const validator = createGuardFn<SimpleType>();
 
       expect(validator(mock)).toBeTruthy();
     });
@@ -103,14 +103,14 @@ describe("Mock Objects", () => {
     it("should generate a schema from a nominal type", () => {
       const fn = createMockFn<TenantId>();
       const mock = fn();
-      const validator = createValidateFn<TenantId>();
+      const validator = createGuardFn<TenantId>();
 
       expect(validator(mock)).toBeTruthy();
     });
 
     it("should generate new objects with each call", () => {
       const fn = createMockFn<SimpleType>();
-      const validator = createValidateFn<SimpleType>();
+      const validator = createGuardFn<SimpleType>();
       const mock1 = fn();
       const mock2 = fn();
 

@@ -10,18 +10,38 @@ export function getSchema<T>(): JSONSchemaType<T> {
 
 /**
  * Validate an object according to the provided type
- * Acts as a type guard
+ * Returns the object back if it is valid or undefined if it is not
  * @transformer ts-json-schema-transformer
  */
-export function validate<T>(_obj: unknown): ReturnType<ValidateFunction<T>> {
+export function validate<T>(_obj: unknown): T | undefined {
   throw new Error("Not implemented. Did you forget to run the transformer?");
 }
 
 /**
- * Get a validator for the provided type
+ * Get a reusable validator for the provided type
+ * Returns the object back if it is valid or undefined if it is not
  * @transformer ts-json-schema-transformer
  */
-export function createValidateFn<T>(): ValidateFunction<T> {
+export function createValidateFn<T>(): (obj: unknown) => T | undefined {
+  throw new Error("Not implemented. Did you forget to run the transformer?");
+}
+
+/**
+ * Validate an object according to the provided type
+ * Acts as a type guard
+ * @transformer ts-json-schema-transformer
+ */
+export function guard<T>(_obj: unknown): ReturnType<ValidateFunction<T>> {
+  throw new Error("Not implemented. Did you forget to run the transformer?");
+}
+
+/**
+ * Get a reusable validator for the provided type
+ * This function is an AJV validator, so errors are stored in the `errors` property
+ * Acts as a type guard
+ * @transformer ts-json-schema-transformer
+ */
+export function createGuardFn<T>(): ValidateFunction<T> {
   throw new Error("Not implemented. Did you forget to run the transformer?");
 }
 
@@ -143,24 +163,41 @@ export class ValidationError extends Error {}
 /**
  * @internal
  */
-export function validationAssertion(validator: ValidateFunction<unknown>, shouldReturn: boolean, obj: unknown) {
-  if (!validator(obj)) {
-    throw new ValidationError(`Validation error: ${validator.errors?.map(error => JSON.stringify(error)).join(", ")}`, {
-      cause: validator.errors,
-    });
+export function __validation(
+  validator: ValidateFunction<unknown>,
+  shouldThrow: boolean,
+  shouldReturn: "object" | "none" | "boolean",
+  obj: unknown,
+) {
+  const result = validator(obj);
+
+  switch (true) {
+    case result && shouldReturn === "object":
+      return obj;
+    case result && shouldReturn === "boolean":
+      return true;
+    case result && shouldReturn === "none":
+      return undefined;
+    case !result && shouldThrow:
+      throw new ValidationError(
+        `Validation error: ${validator.errors?.map(error => JSON.stringify(error)).join(", ")}`,
+        {
+          cause: validator.errors,
+        },
+      );
+    case !result && shouldReturn === "object":
+      return undefined;
+    case !result && shouldReturn === "boolean":
+      return false;
   }
-  return shouldReturn ? obj : undefined;
 }
 
 /**
  * @internal
  */
-export function parser(validator: ValidateFunction<unknown>, assert: boolean, input: string) {
+export function __parser(validator: ValidateFunction<unknown>, shouldThrow: boolean, input: string) {
   const parsed = JSON.parse(input);
-  if (assert) {
-    return validationAssertion(validator, true, parsed);
-  }
-  return validator(parsed) ? parsed : undefined;
+  return __validation(validator, shouldThrow, "object", parsed);
 }
 
 /**

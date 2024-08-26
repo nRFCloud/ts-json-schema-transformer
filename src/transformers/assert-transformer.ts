@@ -24,11 +24,12 @@ export abstract class AssertTransformer {
     const validationAssertionIdentifier = FileTransformer.getOrCreateImport(
       expression.getSourceFile(),
       "@nrfcloud/ts-json-schema-transformer",
-      "validationAssertion",
+      "__validation",
     );
     return ts.factory.createCallExpression(validationAssertionIdentifier, undefined, [
       validatorCallExp,
-      shouldReturn ? ts.factory.createTrue() : ts.factory.createFalse(),
+      ts.factory.createTrue(),
+      shouldReturn ? ts.factory.createStringLiteral("object") : ts.factory.createStringLiteral("none"),
       expression.arguments[0],
     ]);
   }
@@ -46,7 +47,7 @@ export abstract class AssertTransformer {
     const validationAssertionIdentifier = FileTransformer.getOrCreateImport(
       expression.getSourceFile(),
       "@nrfcloud/ts-json-schema-transformer",
-      "validationAssertion",
+      "__validation",
     );
     return ts.factory.createCallExpression(
       ts.factory.createPropertyAccessExpression(
@@ -57,7 +58,8 @@ export abstract class AssertTransformer {
       [
         validationAssertionIdentifier,
         validatorCallExp,
-        shouldReturn ? ts.factory.createTrue() : ts.factory.createFalse(),
+        ts.factory.createTrue(),
+        shouldReturn ? ts.factory.createStringLiteral("object") : ts.factory.createStringLiteral("none"),
       ],
     );
   }

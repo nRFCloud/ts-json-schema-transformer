@@ -1,13 +1,10 @@
 import { ts as schemaGeneratorTs } from "ts-json-schema-generator";
 import * as ts from "typescript";
 import { IProject } from "../project.js";
-import { schemaToValidator } from "../transformer-utils";
+import { schemaToValidator } from "../transformer-utils.js";
+import { FileTransformer } from "./file-transformer.js";
 import { getGenericArg } from "./utils.js";
 
-/**
- * This is where most of the magic happens.
- * We introspect a schema from the type then generate a validator from it.
- */
 export abstract class ValidateTransformer {
   private static createValidator(project: IProject, expression: ts.CallExpression): ts.Expression {
     // Get the type info
@@ -24,10 +21,41 @@ export abstract class ValidateTransformer {
 
   public static transform(project: IProject, expression: ts.CallExpression): ts.Node {
     const validatorCallExp = this.createValidator(project, expression);
-    return ts.factory.createCallExpression(validatorCallExp, undefined, expression.arguments);
+    const validationAssertionIdentifier = FileTransformer.getOrCreateImport(
+      expression.getSourceFile(),
+      "@nrfcloud/ts-json-schema-transformer",
+      "__validation",
+    );
+    return ts.factory.createCallExpression(validationAssertionIdentifier, undefined, [
+      validatorCallExp,
+      ts.factory.createFalse(),
+      ts.factory.createStringLiteral("object"),
+      expression.arguments[0],
+    ]);
   }
 
-  public static transformCreateFn(project: IProject, expression: ts.CallExpression): ts.Node {
-    return this.createValidator(project, expression);
+  public static transformCreateFn(
+    project: IProject,
+    expression: ts.CallExpression,
+  ): ts.Node {
+    const validatorCallExp = this.createValidator(project, expression);
+    const validationAssertionIdentifier = FileTransformer.getOrCreateImport(
+      expression.getSourceFile(),
+      "@nrfcloud/ts-json-schema-transformer",
+      "__validation",
+    );
+    return ts.factory.createCallExpression(
+      ts.factory.createPropertyAccessExpression(
+        validationAssertionIdentifier,
+        "bind",
+      ),
+      undefined,
+      [
+        validationAssertionIdentifier,
+        validatorCallExp,
+        ts.factory.createFalse(),
+        ts.factory.createStringLiteral("object"),
+      ],
+    );
   }
 }

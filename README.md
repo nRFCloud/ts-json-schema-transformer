@@ -137,11 +137,22 @@ Generates a JSON schema for the given type.
 The generic type parameter is the type you want to generate a schema for, and the single input to the function.
 This function call is replaced by the generated schema at compile time.
 
-#### `validate<T>(obj: unknown): obj is T`
+#### `validate<T>(obj: unknown): T | undefined`
+
+Validates an object against the schema for the given type
+Returns either the validated object or undefined if validation fails.
+
+#### `createValidateFn<T>(): (obj: unknown) => T | undefined`
+
+Creates a validator function for the given type.
+Returns either the validated object or undefined if validation fails.
+
+#### `guard<T>(obj: unknown): obj is T`
 
 Validates an object against the schema for the given type.
+Returns a boolean indicating whether the object is valid, acting as a type guard.
 
-#### `createValidateFn<T>(): ValidateFunction<T>`
+#### `createGuardFn<T>(): ValidateFunction<T>`
 
 Generates an AJV validator function for the given type.
 The generic type parameter is the type you want to generate a validator for, and the single input to the function.

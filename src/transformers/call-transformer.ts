@@ -2,10 +2,11 @@ import ts from "typescript";
 import { IProject } from "../project.js";
 import { AssertTransformer } from "./assert-transformer";
 import { GetSchemaTransformer } from "./get-schema-transformer.js";
+import { GuardTransformer } from "./guard-transformer";
 import { MockTransformer } from "./mock-transformer";
 import { ParseTransformer } from "./parse-transformer.js";
 import { hasTransformMarker } from "./utils";
-import { ValidateTransformer } from "./validate-transformer.js";
+import { ValidateTransformer } from "./validate-transformer";
 
 export abstract class CallTransformer {
   public static transform(project: IProject, expression: ts.CallExpression): ts.Node {
@@ -28,8 +29,10 @@ type Task = (project: IProject, expression: ts.CallExpression) => ts.Node;
 
 const CALL_PROCESSORS: Record<string, Task> = {
   "getSchema": GetSchemaTransformer.transform.bind(GetSchemaTransformer),
-  "createValidateFn": ValidateTransformer.transformCreateFn.bind(ValidateTransformer),
-  "validate": ValidateTransformer.transform.bind(ValidateTransformer),
+  "createValidateFn": ValidateTransformer.transformCreateFn.bind(GuardTransformer),
+  "validate": ValidateTransformer.transform.bind(GuardTransformer),
+  "createGuardFn": GuardTransformer.transformCreateFn.bind(GuardTransformer),
+  "guard": GuardTransformer.transform.bind(GuardTransformer),
   "mock": MockTransformer.transform.bind(MockTransformer),
   "createMockFn": MockTransformer.transformCreateFn.bind(MockTransformer),
   "getMockObject": MockTransformer.transform.bind(MockTransformer),
