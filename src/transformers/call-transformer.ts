@@ -31,6 +31,7 @@ const CALL_PROCESSORS: Record<string, Task> = {
   "createValidateFn": ValidateTransformer.transformCreateFn.bind(ValidateTransformer),
   "validate": ValidateTransformer.transform.bind(ValidateTransformer),
   "mock": MockTransformer.transform.bind(MockTransformer),
+  "createMockFn": MockTransformer.transformCreateFn.bind(MockTransformer),
   "getMockObject": MockTransformer.transform.bind(MockTransformer),
   "assertValid": AssertTransformer.transformWithReturn.bind(AssertTransformer),
   "assert": AssertTransformer.transformWithReturn.bind(AssertTransformer),

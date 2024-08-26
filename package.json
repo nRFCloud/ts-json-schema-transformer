@@ -30,6 +30,10 @@
       "types": "./dist/transform.d.ts",
       "require": "./dist/transform.js"
     },
+    "./dist/jsf": {
+        "types": "./dist/json-schema-faker-proxy.d.ts",
+        "require": "./dist/json-schema-faker-proxy.js"
+    },
     "./transform": {
       "types": "./dist/transform.d.ts",
       "require": "./dist/transform.js"

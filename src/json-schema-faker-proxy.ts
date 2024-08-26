@@ -4,9 +4,13 @@ import seedrandom from "seedrandom";
 import type { Schema } from "json-schema-faker";
 const jsf = require("json-schema-faker");
 
-export function mockFn(seed: string | false, schema: Schema) {
+export function mockFn(seed: string | false, schema: Schema): () => object {
+  let rnd = Math.random;
   if (seed !== false) {
-    jsf.option("random", seedrandom(seed));
+    rnd = seedrandom(seed);
   }
-  return jsf.generate(schema);
+  return () => {
+    jsf.option("random", rnd);
+    return jsf.generate(schema);
+  };
 }

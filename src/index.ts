@@ -51,12 +51,12 @@ export function mock<T, const Seed extends string = "none">(): IfEquals<Seed, st
   throw new Error("Not implemented. Did you forget to run the transformer?");
 }
 
-// /**
-//  * @transformer ts-json-schema-transformer
-//  */
-// export function createMockFn<T, const S extends string = "none">(): () => IfEquals<T, string, never, T> {
-//   throw new Error("Not implemented. Did you forget to run the transformer?");
-// }
+/**
+ * @transformer ts-json-schema-transformer
+ */
+export function createMockFn<T, const S extends string = "none">(): () => IfEquals<T, string, never, T> {
+  throw new Error("Not implemented. Did you forget to run the transformer?");
+}
 
 /**
  * Assert that an object is valid according to the provided type
