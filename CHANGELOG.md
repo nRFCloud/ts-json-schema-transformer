@@ -1,5 +1,11 @@
 # @nrfcloud/ts-json-schema-transformer
 
+## 3.1.0
+
+### Minor Changes
+
+- 507c518: Add default export
+
 ## 3.0.0
 
 ### Major Changes
