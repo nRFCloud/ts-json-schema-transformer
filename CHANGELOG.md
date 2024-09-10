@@ -1,5 +1,11 @@
 # @nrfcloud/ts-json-schema-transformer
 
+## 3.1.1
+
+### Patch Changes
+
+- 1791fe8: fix back compat with older runtimes
+
 ## 3.1.0
 
 ### Minor Changes
