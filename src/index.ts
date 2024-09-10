@@ -207,6 +207,19 @@ export function noop(arg: unknown) {
   return arg;
 }
 
+/**
+ * @internal
+ * @deprecated
+ */
+export function validationAssertion(validator: ValidateFunction<unknown>, obj: unknown) {
+  if (!validator(obj)) {
+    throw new ValidationError(`Validation error: ${validator.errors?.map(error => JSON.stringify(error)).join(", ")}`, {
+      cause: validator.errors,
+    });
+  }
+  return obj;
+}
+
 type Exact<T, U> = IfEquals<T, U, T, never>;
 type IfEquals<T, U, Y = unknown, N = never> = (<G>() => G extends T ? 1 : 2) extends (<G>() => G extends U ? 1 : 2) ? Y
   : N;
